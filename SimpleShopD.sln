@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "SimpleShopD\WebApi.csproj", "{533280FC-73BF-41C0-BE31-FC4898E44F24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Domain", "SimpleShopD.Domain\SimpleShopD.Domain.csproj", "{83C29794-96FA-4C42-A932-C48D68AAE95D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83C29794-96FA-4C42-A932-C48D68AAE95D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83C29794-96FA-4C42-A932-C48D68AAE95D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83C29794-96FA-4C42-A932-C48D68AAE95D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83C29794-96FA-4C42-A932-C48D68AAE95D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E33007BC-AE7C-4913-9BFB-9CA48EA03A79}
+	EndGlobalSection
+EndGlobal
