@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace SimpleShopD.Domain.Models.User.ValueObjects
+namespace SimpleShopD.Domain.Models.Users.ValueObjects
 {
     internal readonly record struct Password
     {
@@ -22,5 +22,7 @@ namespace SimpleShopD.Domain.Models.User.ValueObjects
             var result = computedHash.SequenceEqual(Hash);
             return result;
         }
+
+        public static implicit operator Password(string password) => new(password);
     }
 }

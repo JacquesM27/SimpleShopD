@@ -1,4 +1,4 @@
-﻿namespace SimpleShopD.Domain.Models.User.ValueObjects
+﻿namespace SimpleShopD.Domain.Models.Users.ValueObjects
 {
     internal readonly record struct Fullname
     {
