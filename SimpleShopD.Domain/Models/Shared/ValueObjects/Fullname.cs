@@ -1,4 +1,4 @@
-﻿namespace SimpleShopD.Domain.Models.Users.ValueObjects
+﻿namespace SimpleShopD.Domain.Models.Shared.ValueObjects
 {
     internal readonly record struct Fullname
     {
@@ -12,10 +12,10 @@
             if (string.IsNullOrWhiteSpace(lastname))
                 throw new ArgumentNullException("Lastname cannot be empty");
 
-            if(firstname.Length is < 2 or > 100)
-                throw new ArgumentOutOfRangeException("Firstname length must be longer than 2 and shorter than 100");
+            if (firstname.Length is < 2 or > 100)
+                throw new ArgumentException("Firstname length must be longer than 2 and shorter than 100");
             if (lastname.Length is < 2 or > 100)
-                throw new ArgumentOutOfRangeException("Lastname length must be longer than 2 and shorter than 100");
+                throw new ArgumentException("Lastname length must be longer than 2 and shorter than 100");
 
             Firstname = firstname;
             Lastname = lastname;

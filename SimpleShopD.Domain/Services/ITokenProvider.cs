@@ -1,9 +1,10 @@
-﻿using SimpleShopD.Domain.Services.POCO;
+﻿using SimpleShopD.Domain.Enum;
+using SimpleShopD.Domain.Services.POCO;
 
 namespace SimpleShopD.Domain.Services
 {
     internal interface ITokenProvider<T> where T : notnull
     {
-        LoginToken Provide(DateTime expirationDate, string role, T userId);
+        LoginToken Provide(DateTime expirationDate, UserRole role, T userId);
     }
 }

@@ -17,7 +17,7 @@ namespace SimpleShopD.Domain.Models.Users.ValueObjects
                 TokenType.Activation => DateTime.UtcNow.AddDays(1),
                 TokenType.ResetPassword => DateTime.UtcNow.AddMinutes(30),
                 TokenType.Refresh => DateTime.UtcNow.AddMinutes(30),
-                _ => throw new ArgumentOutOfRangeException(nameof(tokenType), tokenType, "Value not implemented."),
+                _ => throw new ArgumentException("Value not implemented."),
             };
         }
 
