@@ -7,7 +7,6 @@
         Canceled,
         Pending,
         Completed,
-        Delivered,
         Returned
     }
 }

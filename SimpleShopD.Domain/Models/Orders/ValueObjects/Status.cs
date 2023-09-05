@@ -2,10 +2,15 @@
 
 namespace SimpleShopD.Domain.Models.Orders.ValueObjects
 {
-    internal readonly record struct Status(OrderStatus OrderStatus)
+    internal class Status
     {
-        public static implicit operator OrderStatus(Status status) => status.OrderStatus;
+        public OrderStatus OrderStatus { get; private set; }
 
-        public static implicit operator Status(OrderStatus orderStatus) => new(orderStatus);
+        public Status(OrderStatus orderStatus)
+        {
+            OrderStatus = orderStatus;
+        }
+
+        internal void SetStatus(OrderStatus orderStatus) => OrderStatus = orderStatus;
     }
 }
