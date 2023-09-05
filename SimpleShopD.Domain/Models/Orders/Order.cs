@@ -77,29 +77,33 @@ namespace SimpleShopD.Domain.Models.Orders
 
         public void AddOrderLine(decimal salePrice, decimal quantity, T productId)
         {
-            OrderLines.Add(new OrderLine<T>(NextLineNo, salePrice, quantity, productId));
+            var existingLine = OrderLines.FirstOrDefault(x => x.ProductId.Equals(productId) && x.SalePrice == salePrice);
+
+            if (existingLine is not null)
+                existingLine.AddQuantity(quantity);
+            else
+                OrderLines.Add(new OrderLine<T>(NextLineNo, salePrice, quantity, productId));
+
             LastModifiedDate = DateTime.UtcNow;
         }
 
         public void RemoveOrderLine(int no)
         {
-            if(!OrderLines.Any(x => x.No == no))
-                throw new InvalidOperationException("Line was not found.");
-
-            int indexOfNo = OrderLines.IndexOf(OrderLines.First(x => x.No == no));
-            RemoveLine(indexOfNo);
+            int orderLineIndex = OrderLines.IndexOf(OrderLines.First(x => x.No == no));
+            RemoveLine(orderLineIndex);
         }
 
         public void RemoveOrderLine(OrderLine<T> orderLine)
         {
             int orderLineIndex = OrderLines.IndexOf(orderLine);
-            if (orderLineIndex == -1)
-                throw new InvalidOperationException("Line was not found.");
             RemoveLine(orderLineIndex);
         }
 
         private void RemoveLine(int orderLineIndex)
         {
+            if (orderLineIndex == -1)
+                throw new InvalidOperationException("Line was not found.");
+
             OrderLines.RemoveAt(orderLineIndex);
 
             if (orderLineIndex != OrderLines.Count - 1)

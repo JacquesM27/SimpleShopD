@@ -4,7 +4,7 @@
     {
         public int No { get; private set; }
         public decimal SalePrice { get; }
-        public decimal Quantity { get; }
+        public decimal Quantity { get; private set; }
         public T ProductId { get; }
 
         public OrderLine(int no, decimal salePrice, decimal quantity, T productId)
@@ -27,6 +27,11 @@
             if(no < 0)
                 throw new ArgumentOutOfRangeException(nameof(no));
             No = no;
+        }
+
+        internal void AddQuantity(decimal quantity)
+        {
+            Quantity += quantity;
         }
     }
 }
