@@ -89,18 +89,20 @@ namespace SimpleShopD.Domain.Models.Orders
 
         public void RemoveOrderLine(int no)
         {
-            int orderLineIndex = OrderLines.IndexOf(OrderLines.First(x => x.No == no));
-            RemoveLine(orderLineIndex);
+            RemoveLine(OrderLines.First(x => x.No == no));
         }
 
         public void RemoveOrderLine(OrderLine<T> orderLine)
         {
-            int orderLineIndex = OrderLines.IndexOf(orderLine);
-            RemoveLine(orderLineIndex);
+            RemoveLine(orderLine);
         }
 
-        private void RemoveLine(int orderLineIndex)
+        private void RemoveLine(OrderLine<T> orderLine)
         {
+            if (CurrentStatus.OrderStatus is not OrderStatus.NotPaid and not OrderStatus.Paid)
+                throw new InvalidOperationException($"Cannot remove line when status is {CurrentStatus.OrderStatus}.");
+
+            int orderLineIndex = OrderLines.IndexOf(orderLine);
             if (orderLineIndex == -1)
                 throw new InvalidOperationException("Line was not found.");
 
