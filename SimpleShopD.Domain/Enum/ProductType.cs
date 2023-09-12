@@ -1,6 +1,6 @@
 ﻿namespace SimpleShopD.Domain.Enum
 {
-    internal enum ProductType
+    public enum ProductType
     {
         Product,
         Service

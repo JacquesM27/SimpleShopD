@@ -1,6 +1,6 @@
 ﻿namespace SimpleShopD.Domain.Enum
 {
-    internal enum TokenType
+    public enum TokenType
     {
         Activation,
         ResetPassword,

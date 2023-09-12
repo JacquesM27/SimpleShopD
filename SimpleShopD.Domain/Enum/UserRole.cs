@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimpleShopD.Domain.Enum
+﻿namespace SimpleShopD.Domain.Enum
 {
-    internal enum UserRole
+    public enum UserRole
     {
         User,
         Admin

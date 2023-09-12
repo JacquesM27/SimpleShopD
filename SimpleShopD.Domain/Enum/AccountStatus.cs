@@ -1,6 +1,6 @@
 ﻿namespace SimpleShopD.Domain.Enum
 {
-    internal enum AccountStatus
+    public enum AccountStatus
     {
         Active,
         Inactive

@@ -1,10 +1,10 @@
 ﻿namespace SimpleShopD.Domain.Enum
 {
-    internal enum OrderStatus
+    public enum OrderStatus
     {
         NotPaid,
         Paid,
-        Canceled,
+        Cancelled,
         Pending,
         Completed,
         Returned
