@@ -1,6 +1,7 @@
-﻿namespace SimpleShopD.Domain.Orders.Exceptions
+﻿using SimpleShopD.Shared.Abstractions.Exceptions;
+namespace SimpleShopD.Domain.Orders.Exceptions
 {
-    public sealed class PayOrderException : Exception
+    public sealed class PayOrderException : CustomException
     {
         public PayOrderException(string message) : base(message) { }
     }

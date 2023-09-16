@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleShopD.Shared.Abstractions.Exceptions;
 
 namespace SimpleShopD.Domain.Products.Exceptions
 {
-    public class EmptyTitleExeption : Exception
+    public class EmptyTitleExeption : CustomException
     {
         public EmptyTitleExeption(string message) : base(message) { }
     }

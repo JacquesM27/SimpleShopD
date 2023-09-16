@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "SimpleShopD\WebAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Domain", "SimpleShopD.Domain\SimpleShopD.Domain.csproj", "{83C29794-96FA-4C42-A932-C48D68AAE95D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Application", "SimpleShopD.Application\SimpleShopD.Application.csproj", "{0366953A-1E20-49F4-9FEA-3C946511EE20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Application", "SimpleShopD.Application\SimpleShopD.Application.csproj", "{0366953A-1E20-49F4-9FEA-3C946511EE20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D4C0FA7B-DF93-4F41-A753-B9D7DBFDE06A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Shared.Abstractions", "SimpleShopD.Shared.Abstractions\SimpleShopD.Shared.Abstractions.csproj", "{367D9694-B7FB-4A00-9DDD-430C8BBA0923}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Shared", "SimpleShopD.Shared\SimpleShopD.Shared.csproj", "{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +33,21 @@ Global
 		{0366953A-1E20-49F4-9FEA-3C946511EE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0366953A-1E20-49F4-9FEA-3C946511EE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0366953A-1E20-49F4-9FEA-3C946511EE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{367D9694-B7FB-4A00-9DDD-430C8BBA0923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{367D9694-B7FB-4A00-9DDD-430C8BBA0923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{367D9694-B7FB-4A00-9DDD-430C8BBA0923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{367D9694-B7FB-4A00-9DDD-430C8BBA0923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{367D9694-B7FB-4A00-9DDD-430C8BBA0923} = {D4C0FA7B-DF93-4F41-A753-B9D7DBFDE06A}
+		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9} = {D4C0FA7B-DF93-4F41-A753-B9D7DBFDE06A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E33007BC-AE7C-4913-9BFB-9CA48EA03A79}

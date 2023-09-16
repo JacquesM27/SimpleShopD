@@ -1,6 +1,8 @@
-﻿namespace SimpleShopD.Domain.Users.Exceptions
+﻿using SimpleShopD.Shared.Abstractions.Exceptions;
+
+namespace SimpleShopD.Domain.Users.Exceptions
 {
-    public class ActivationOperationException : Exception
+    public class ActivationOperationException : CustomException
     {
         public ActivationOperationException(string message) : base(message) { }
     }

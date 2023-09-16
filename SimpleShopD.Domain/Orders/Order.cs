@@ -10,8 +10,8 @@ namespace SimpleShopD.Domain.Orders
     {
         public DateTime CreationDate { get; }
         public DateTime LastModifiedDate { get; private set; }
-        public Address DeliveryAddress { get; }
-        public Fullname ReceiverFullname { get; }
+        public Address DeliveryAddress { get; private set; }
+        public Fullname ReceiverFullname { get; private set; }
         public StatusOfOrder CurrentStatus { get; private set; }
         public IList<OrderLine<T>> OrderLines { get; private set; }
 
@@ -35,6 +35,20 @@ namespace SimpleShopD.Domain.Orders
                 throw new PayOrderException("Invalid amount.");
             CurrentStatus = OrderStatus.Paid;
             LastModifiedDate = DateTime.UtcNow;
+        }
+
+        public void ChangeDeliveryAddress(Address address)
+        {
+            if (CurrentStatus.Value is not OrderStatus.NotPaid or not OrderStatus.Paid)
+                throw new ChangeAddressException("Order is pending od completed. Cannot change delivery address.");
+            DeliveryAddress = address;
+        }
+
+        public void ChangeReceiverFullname(Fullname receiverFullname)
+        {
+            if (CurrentStatus.Value is not OrderStatus.NotPaid or not OrderStatus.Paid)
+                throw new ChangeReceiverOfOrderException("Order is pending or completed. Cannot chage order receiver");
+            ReceiverFullname = receiverFullname;
         }
 
         public void MoveToPending()

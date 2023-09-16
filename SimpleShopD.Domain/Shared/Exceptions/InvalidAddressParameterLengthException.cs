@@ -1,6 +1,7 @@
-﻿namespace SimpleShopD.Domain.Shared.Exceptions
+﻿using SimpleShopD.Shared.Abstractions.Exceptions;
+namespace SimpleShopD.Domain.Shared.Exceptions
 {
-    public class InvalidAddressParameterLengthException : Exception
+    public class InvalidAddressParameterLengthException : CustomException
     {
         public InvalidAddressParameterLengthException(string message) : base(message) { }
     }

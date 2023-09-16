@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleShopD.Shared.Abstractions.Exceptions;
 
 namespace SimpleShopD.Domain.Products.Exceptions
 {
-    public class IncorrectPriceValueException : Exception
+    public class IncorrectPriceValueException : CustomException
     {
         public IncorrectPriceValueException(string message) : base(message) { }
     }

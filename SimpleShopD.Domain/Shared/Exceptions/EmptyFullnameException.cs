@@ -1,6 +1,7 @@
-﻿namespace SimpleShopD.Domain.Shared.Exceptions
+﻿using SimpleShopD.Shared.Abstractions.Exceptions;
+namespace SimpleShopD.Domain.Shared.Exceptions
 {
-    public class EmptyFullnameException : Exception
+    public class EmptyFullnameException : CustomException
     {
         public EmptyFullnameException(string message) : base(message) { }
     }
