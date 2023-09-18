@@ -2,10 +2,13 @@
 
 namespace SimpleShopD.Domain.Repositories
 {
-    public interface IProductRepository<T> where T : notnull
+    public interface IProductRepository
     {
-        Task<Product<T>> GetAsync(T id, CancellationToken cancellationToken = default);
-        Task<Product<T>> AddAsync(Product<T> product, CancellationToken cancellationToken = default);
+        Task<Product<Guid>> GetAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Product<Guid>> AddAsync(Product<Guid> product, CancellationToken cancellationToken = default);
         Task<bool> ExistsByTitleAsync(string name, CancellationToken cancellationToken = default);
+        Task<Product<Guid>> UpdateAsync(Product<Guid> product, CancellationToken cancellationToken = default);
+        Task<bool> DeleteByIdAsync(Product<Guid> product, CancellationToken cancellationToken = default);
+        Task<bool> AreAllExists(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace SimpleShopD.Domain.Repositories
 {
-    public interface IOrderRepository<T> where T : notnull
+    public interface IOrderRepository
     {
-        Task<Order<T>> GetAsync(T id, CancellationToken cancellationToken = default);
-        Task<Order<T>> AddAsync(Order<T> order, CancellationToken cancellationToken = default);
+        Task<Order<Guid>> GetAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Order<Guid>> AddAsync(Order<Guid> order, CancellationToken cancellationToken = default);
     }
 }
