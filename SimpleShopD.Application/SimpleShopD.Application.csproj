@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleShopD.Domain\SimpleShopD.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
