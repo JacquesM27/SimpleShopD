@@ -1,6 +1,6 @@
-﻿using SimpleShopD.Domain.Products.Exceptions;
+﻿using SimpleShopD.Domain.Orders.Products.Exceptions;
 
-namespace SimpleShopD.Doman.Products.ValueObjects
+namespace SimpleShopD.Domain.Orders.Products.ValueObjects
 {
     public sealed record Price
     {
@@ -8,7 +8,7 @@ namespace SimpleShopD.Doman.Products.ValueObjects
 
         public Price(decimal value)
         {
-            if(value < 0)
+            if (value < 0)
                 throw new IncorrectPriceValueException("Price cannot be negative.");
 
             Value = value;

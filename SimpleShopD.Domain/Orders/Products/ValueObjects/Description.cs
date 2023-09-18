@@ -1,6 +1,6 @@
-﻿using SimpleShopD.Domain.Products.Exceptions;
+﻿using SimpleShopD.Domain.Orders.Products.Exceptions;
 
-namespace SimpleShopD.Doman.Products.ValueObjects
+namespace SimpleShopD.Domain.Orders.Products.ValueObjects
 {
     public sealed record Description
     {
@@ -8,7 +8,7 @@ namespace SimpleShopD.Doman.Products.ValueObjects
 
         public Description(string value)
         {
-            if(string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
                 throw new EmptyDescriptionException("Description cannot be empty");
 
             Value = value;

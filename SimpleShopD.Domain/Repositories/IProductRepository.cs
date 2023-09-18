@@ -1,4 +1,4 @@
-﻿using SimpleShopD.Doman.Products;
+﻿using SimpleShopD.Domain.Orders.Products;
 
 namespace SimpleShopD.Domain.Repositories
 {
@@ -6,5 +6,6 @@ namespace SimpleShopD.Domain.Repositories
     {
         Task<Product<T>> GetAsync(T id, CancellationToken cancellationToken = default);
         Task<Product<T>> AddAsync(Product<T> product, CancellationToken cancellationToken = default);
+        Task<bool> ExistsByTitleAsync(string name, CancellationToken cancellationToken = default);
     }
 }

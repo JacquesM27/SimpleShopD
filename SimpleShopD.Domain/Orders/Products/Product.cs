@@ -1,9 +1,9 @@
-﻿using SimpleShopD.Doman.Products.ValueObjects;
+﻿using SimpleShopD.Domain.Orders.Products.ValueObjects;
 using SimpleShopD.Doman.Shared.Base;
 
-namespace SimpleShopD.Doman.Products
+namespace SimpleShopD.Domain.Orders.Products
 {
-    public sealed class Product<T> : Entity<T>  where T : notnull
+    public sealed class Product<T> : Entity<T> where T : notnull
     {
         public Title Title { get; }
         public Description Description { get; }
