@@ -26,7 +26,7 @@ namespace SimpleShopD.Domain.Orders
             LastModifiedDate = DateTime.UtcNow;
             DeliveryAddress = deliveryAddress;
             ReceiverFullname = receiverFullname;
-            CurrentStatus = new(OrderStatus.NotPaid);
+            CurrentStatus = OrderStatus.NotPaid;
             OrderLines = orderLines.ToList();
         }
 
