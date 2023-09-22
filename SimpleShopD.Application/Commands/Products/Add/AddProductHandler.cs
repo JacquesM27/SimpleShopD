@@ -5,14 +5,14 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Products.Add
 {
-    internal sealed class AddProductHandler : ICommandHandler<AddProduct>
+    internal sealed class AddProductHandler : ICommandIdHandler<AddProduct, Guid>
     {
         private readonly IProductRepository _productRepository;
 
         public AddProductHandler(IProductRepository productRepository) 
             => _productRepository = productRepository;
 
-        public async Task HandleAsync(AddProduct command)
+        public async Task<Guid> HandleAsync(AddProduct command)
         {
             if(await _productRepository.ExistsByTitleAsync(command.Title))
                 throw new ProductAlreadyExistException(command.Title);
@@ -24,7 +24,8 @@ namespace SimpleShopD.Application.Commands.Products.Add
                 typeOfProduct: command.ProductType,
                 price: command.Price);
 
-            await _productRepository.AddAsync(product);
+            var id = await _productRepository.AddAsync(product);
+            return id;
         }
     }
 }

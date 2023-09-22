@@ -16,7 +16,7 @@ namespace SimpleShopD.Application.Commands.Products.Delete
             var product = await _productRepository.GetAsync(command.Id)
                 ?? throw new ProductDoesNotExistException(command.Id.ToString());
 
-            await _productRepository.DeleteByIdAsync(product);
+            await _productRepository.DeleteAsync(product);
         }
     }
 }

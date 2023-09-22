@@ -6,7 +6,7 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Orders.Add
 {
-    internal sealed class AddOrderHandler : ICommandHandler<AddOrder>
+    internal sealed class AddOrderHandler : ICommandIdHandler<AddOrder, Guid>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
@@ -19,7 +19,7 @@ namespace SimpleShopD.Application.Commands.Orders.Add
             _productRepository = productRepository;
         }
 
-        public async Task HandleAsync(AddOrder command)
+        public async Task<Guid> HandleAsync(AddOrder command)
         {
             var user = await _userRepository.GetAsync(command.UserId)
                 ?? throw new UserDoesNotExistException(command.UserId.ToString());
@@ -29,7 +29,8 @@ namespace SimpleShopD.Application.Commands.Orders.Add
             var lines = await MapLines(command);
 
             var order = new Order<Guid>(Guid.NewGuid(), DateTime.UtcNow, user, address, fullname, lines);
-            await _orderRepository.AddAsync(order);
+            var id = await _orderRepository.AddAsync(order);
+            return id;
         }
 
         private async Task<List<OrderLine<Guid>>> MapLines(AddOrder command)
