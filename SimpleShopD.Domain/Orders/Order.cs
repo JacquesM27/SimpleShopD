@@ -18,6 +18,7 @@ namespace SimpleShopD.Domain.Orders
         public IList<OrderLine<T>> OrderLines { get; private set; }
 
         private decimal TotalPrice { get => OrderLines.Sum(x => x.SalePrice); }
+        private int NextNo { get => OrderLines.Max(x => x.No); }
 
         public Order(T id, DateTime creationDate, User<T> user, Address deliveryAddress, Fullname receiverFullname, IEnumerable<OrderLine<T>> orderLines) : base(id)
         {
@@ -92,7 +93,13 @@ namespace SimpleShopD.Domain.Orders
             LastModifiedDate = DateTime.UtcNow;
         }
 
-        public void AddOrderLine(OrderLine<T> orderLine)
+        public void AddOrderLine(T id, T productId, decimal quantity, decimal price)
+        {
+            OrderLine<T> orderLine = new(id, NextNo, price, quantity, productId);
+            AddOrderLine(orderLine);
+        }
+
+        private void AddOrderLine(OrderLine<T> orderLine)
         {
             var existingLine = OrderLines.FirstOrDefault(x => x.ProductId.Equals(orderLine.ProductId) && x.SalePrice == orderLine.SalePrice);
 
@@ -106,7 +113,10 @@ namespace SimpleShopD.Domain.Orders
 
         public void RemoveOrderLine(int no)
         {
-            RemoveLine(OrderLines.First(x => x.No == no));
+            var orderLine = OrderLines.First(x => x.No == no) 
+                ?? throw new RemoveLineException("Line was not found.");
+
+            RemoveLine(orderLine);
         }
 
         public void RemoveOrderLine(OrderLine<T> orderLine)
