@@ -1,6 +1,6 @@
 ﻿using SimpleShopD.Domain.Enum;
 
-namespace SimpleShopD.Doman.Users.ValueObjects
+namespace SimpleShopD.Domain.Users.ValueObjects
 {
     public sealed record RoleOfUser(UserRole UserRole)
     {

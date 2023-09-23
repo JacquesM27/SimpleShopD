@@ -1,6 +1,6 @@
 ﻿using SimpleShopD.Domain.Enum;
 
-namespace SimpleShopD.Domain.Orders.Products.ValueObjects
+namespace SimpleShopD.Domain.Products.ValueObjects
 {
     public sealed record TypeOfProduct(ProductType ProductType)
     {

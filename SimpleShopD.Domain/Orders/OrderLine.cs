@@ -1,5 +1,5 @@
 ﻿using SimpleShopD.Domain.Orders.Exceptions;
-using SimpleShopD.Doman.Shared.Base;
+using SimpleShopD.Domain.Shared.Base;
 
 namespace SimpleShopD.Domain.Orders
 {

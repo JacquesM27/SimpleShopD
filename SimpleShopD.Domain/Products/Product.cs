@@ -1,8 +1,8 @@
 ﻿using SimpleShopD.Domain.Enum;
-using SimpleShopD.Domain.Orders.Products.ValueObjects;
-using SimpleShopD.Doman.Shared.Base;
+using SimpleShopD.Domain.Products.ValueObjects;
+using SimpleShopD.Domain.Shared.Base;
 
-namespace SimpleShopD.Domain.Orders.Products
+namespace SimpleShopD.Domain.Products
 {
     public sealed class Product<T> : Entity<T> where T : notnull
     {

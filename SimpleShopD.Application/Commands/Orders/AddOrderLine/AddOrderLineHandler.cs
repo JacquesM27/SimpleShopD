@@ -21,10 +21,10 @@ namespace SimpleShopD.Application.Commands.Orders.AddOrderLine
             var order = await _orderRepository.GetAsync(command.OrderId)
                 ?? throw new OrderDoesNotExistException(command.OrderId.ToString());
 
-            if(await _productRepository.DoesExist(command.ProductId))
-                throw new ProductDoesNotExistException(command.ProductId.ToString());
+            if(await _productRepository.DoesExist(command.OrderLine.ProductId))
+                throw new ProductDoesNotExistException(command.OrderLine.ProductId.ToString());
 
-            order.AddOrderLine(Guid.NewGuid(), command.ProductId, command.Quantity, command.Price);
+            order.AddOrderLine(Guid.NewGuid(), command.OrderLine.ProductId, command.OrderLine.Quantity, command.OrderLine.Price);
         }
     }
 }

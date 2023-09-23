@@ -1,9 +1,9 @@
 ﻿using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Orders.Exceptions;
 using SimpleShopD.Domain.Orders.ValueObjects;
-using SimpleShopD.Doman.Shared.Base;
-using SimpleShopD.Doman.Shared.ValueObjects;
-using SimpleShopD.Doman.Users;
+using SimpleShopD.Domain.Shared.Base;
+using SimpleShopD.Domain.Shared.ValueObjects;
+using SimpleShopD.Domain.Users;
 
 namespace SimpleShopD.Domain.Orders
 {

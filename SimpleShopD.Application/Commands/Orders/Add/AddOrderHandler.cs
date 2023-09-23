@@ -1,7 +1,7 @@
 ﻿using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Orders;
 using SimpleShopD.Domain.Repositories;
-using SimpleShopD.Doman.Shared.ValueObjects;
+using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Orders.Add
@@ -43,7 +43,7 @@ namespace SimpleShopD.Application.Commands.Orders.Add
                     new OrderLine<Guid>(
                         Guid.NewGuid(),
                         index + 1,
-                        line.SalePrice,
+                        line.Price,
                         line.Quantity,
                         line.ProductId))
                 .ToList();

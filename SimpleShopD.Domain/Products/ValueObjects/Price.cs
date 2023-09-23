@@ -1,6 +1,6 @@
 ﻿using SimpleShopD.Domain.Orders.Products.Exceptions;
 
-namespace SimpleShopD.Domain.Orders.Products.ValueObjects
+namespace SimpleShopD.Domain.Products.ValueObjects
 {
     public sealed record Price
     {

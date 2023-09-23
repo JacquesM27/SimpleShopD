@@ -1,6 +1,6 @@
 ﻿using SimpleShopD.Domain.Shared.Exceptions;
 
-namespace SimpleShopD.Doman.Shared.ValueObjects
+namespace SimpleShopD.Domain.Shared.ValueObjects
 {
     public sealed record Fullname
     {

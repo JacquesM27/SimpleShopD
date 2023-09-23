@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SimpleShopD.Domain.Models.Users.ValueObjects
+namespace SimpleShopD.Domain.Users.ValueObjects
 {
     public sealed record Password
     {

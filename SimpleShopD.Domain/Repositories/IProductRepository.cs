@@ -1,4 +1,4 @@
-﻿using SimpleShopD.Domain.Orders.Products;
+﻿using SimpleShopD.Domain.Products;
 
 namespace SimpleShopD.Domain.Repositories
 {

@@ -1,4 +1,4 @@
-﻿namespace SimpleShopD.Doman.Shared.Base
+﻿namespace SimpleShopD.Domain.Shared.Base
 {
     public abstract class Entity<T> : IEquatable<Entity<T>> where T : notnull
     {

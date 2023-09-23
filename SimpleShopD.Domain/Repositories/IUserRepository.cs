@@ -1,4 +1,4 @@
-﻿using SimpleShopD.Doman.Users;
+﻿using SimpleShopD.Domain.Users;
 
 namespace SimpleShopD.Domain.Repositories
 {

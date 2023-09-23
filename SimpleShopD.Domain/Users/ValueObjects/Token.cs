@@ -1,7 +1,7 @@
 ﻿using SimpleShopD.Domain.Enum;
 using System.Security.Cryptography;
 
-namespace SimpleShopD.Doman.Users.ValueObjects
+namespace SimpleShopD.Domain.Users.ValueObjects
 {
     public sealed record Token
     {

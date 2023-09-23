@@ -1,6 +1,6 @@
 ﻿using SimpleShopD.Shared.Abstractions.Exceptions;
 
-namespace SimpleShopD.Domain.Orders.Products.Exceptions
+namespace SimpleShopD.Domain.Products.Exceptions
 {
     public class IncorrectPriceValueException : CustomException
     {
