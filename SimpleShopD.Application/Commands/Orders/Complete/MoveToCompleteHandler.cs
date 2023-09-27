@@ -8,7 +8,7 @@ namespace SimpleShopD.Application.Commands.Orders.Complete
     {
         private readonly IOrderRepository _orderRepository;
 
-        public MoveToCompleteHandler(IOrderRepository orderRepository) 
+        public MoveToCompleteHandler(IOrderRepository orderRepository)
             => _orderRepository = orderRepository;
 
         public async Task HandleAsync(MoveToComplete command)

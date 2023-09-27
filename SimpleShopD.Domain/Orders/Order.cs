@@ -33,9 +33,9 @@ namespace SimpleShopD.Domain.Orders
 
         public void PayOrder(decimal amount)
         {
-            if(CurrentStatus.Value is not OrderStatus.NotPaid)
+            if (CurrentStatus.Value is not OrderStatus.NotPaid)
                 throw new PayOrderException("Order is already paid.");
-            if(amount != TotalPrice)
+            if (amount != TotalPrice)
                 throw new PayOrderException("Invalid amount.");
             CurrentStatus = OrderStatus.Paid;
             LastModifiedDate = DateTime.UtcNow;
@@ -113,7 +113,7 @@ namespace SimpleShopD.Domain.Orders
 
         public void RemoveOrderLine(int no)
         {
-            var orderLine = OrderLines.First(x => x.No == no) 
+            var orderLine = OrderLines.First(x => x.No == no)
                 ?? throw new RemoveLineException("Line was not found.");
 
             RemoveLine(orderLine);

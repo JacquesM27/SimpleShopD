@@ -1,10 +1,10 @@
 ﻿using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Services.DTO;
-using SimpleShopD.Domain.Users.ValueObjects;
-using SimpleShopD.Domain.Users.Exceptions;
-using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Domain.Shared.Base;
+using SimpleShopD.Domain.Shared.ValueObjects;
+using SimpleShopD.Domain.Users.Exceptions;
+using SimpleShopD.Domain.Users.ValueObjects;
 
 namespace SimpleShopD.Domain.Users
 {
@@ -40,7 +40,7 @@ namespace SimpleShopD.Domain.Users
         public static User<T> RegisterUser(T id, Fullname fullname, Email email, Password password, HashSet<Address> addresses)
             => new(id, fullname, email, password, AccountStatus.Inactive, UserRole.User, addresses, TokenType.Activation, null, null);
 
-        public void GenerateResetPasswordToken()
+        public void GeneratePasswordResetToken()
             => ResetPasswordToken = TokenType.ResetPassword;
 
         public void SetNewPassword(string newPassword, string resetPasswordToken)

@@ -8,7 +8,7 @@ namespace SimpleShopD.Application.Commands.Orders.Pay
     {
         private readonly IOrderRepository _orderRepository;
 
-        public PayOrderHandler(IOrderRepository orderRepository) 
+        public PayOrderHandler(IOrderRepository orderRepository)
             => _orderRepository = orderRepository;
 
         public async Task HandleAsync(PayOrder command)

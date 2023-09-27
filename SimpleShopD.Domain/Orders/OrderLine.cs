@@ -10,7 +10,7 @@ namespace SimpleShopD.Domain.Orders
         public decimal Quantity { get; private set; }
         public T ProductId { get; }
 
-        public OrderLine(T id, int no, decimal salePrice, decimal quantity, T productId) 
+        public OrderLine(T id, int no, decimal salePrice, decimal quantity, T productId)
             : base(id)
         {
             if (no < 0)

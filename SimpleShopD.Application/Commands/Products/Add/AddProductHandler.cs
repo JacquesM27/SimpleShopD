@@ -1,5 +1,5 @@
 ﻿using SimpleShopD.Application.Exceptions;
-using SimpleShopD.Domain.Orders.Products;
+using SimpleShopD.Domain.Products;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Shared.Abstractions.Commands;
 
@@ -9,12 +9,12 @@ namespace SimpleShopD.Application.Commands.Products.Add
     {
         private readonly IProductRepository _productRepository;
 
-        public AddProductHandler(IProductRepository productRepository) 
+        public AddProductHandler(IProductRepository productRepository)
             => _productRepository = productRepository;
 
         public async Task<Guid> HandleAsync(AddProduct command)
         {
-            if(await _productRepository.ExistsByTitleAsync(command.Title))
+            if (await _productRepository.ExistsByTitleAsync(command.Title))
                 throw new ProductAlreadyExistException(command.Title);
 
             var product = new Product<Guid>(

@@ -8,7 +8,7 @@ namespace SimpleShopD.Application.Commands.Products.Update
     {
         private readonly IProductRepository _productRepository;
 
-        public UpdateProductHandler(IProductRepository productRepository) 
+        public UpdateProductHandler(IProductRepository productRepository)
             => _productRepository = productRepository;
 
         public async Task HandleAsync(UpdateProduct command)

@@ -1,4 +1,4 @@
-﻿using SimpleShopD.Domain.Orders.Products.Exceptions;
+﻿using SimpleShopD.Domain.Products.Exceptions;
 
 namespace SimpleShopD.Domain.Products.ValueObjects
 {

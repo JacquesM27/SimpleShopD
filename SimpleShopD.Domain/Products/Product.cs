@@ -1,5 +1,4 @@
-﻿using SimpleShopD.Domain.Enum;
-using SimpleShopD.Domain.Products.ValueObjects;
+﻿using SimpleShopD.Domain.Products.ValueObjects;
 using SimpleShopD.Domain.Shared.Base;
 
 namespace SimpleShopD.Domain.Products

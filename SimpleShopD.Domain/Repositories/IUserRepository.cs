@@ -6,7 +6,8 @@ namespace SimpleShopD.Domain.Repositories
     {
         Task<User<Guid>> GetAsync(Guid id, CancellationToken cancellationToken = default);
         Task AddAsync(User<Guid> user, CancellationToken cancellationToken = default);
-        Task<bool> IsTheEmailUnique(string email, CancellationToken cancellation = default);
+        Task<bool> IsTheEmailUniqueAsync(string email, CancellationToken cancellation = default);
         Task UpdateAsync(User<Guid> user, CancellationToken cancellation = default);
+        Task<bool> IsAdminAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

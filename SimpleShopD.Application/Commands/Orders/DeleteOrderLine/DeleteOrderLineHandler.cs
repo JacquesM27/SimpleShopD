@@ -8,7 +8,7 @@ namespace SimpleShopD.Application.Commands.Orders.DeleteOrderLine
     {
         private readonly IOrderRepository _orderRepository;
 
-        public DeleteOrderLineHandler(IOrderRepository orderRepository) 
+        public DeleteOrderLineHandler(IOrderRepository orderRepository)
             => _orderRepository = orderRepository;
 
         public async Task HandleAsync(DeleteOrderLine command)

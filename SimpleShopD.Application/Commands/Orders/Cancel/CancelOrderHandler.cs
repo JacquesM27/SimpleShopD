@@ -1,11 +1,6 @@
 ﻿using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Shared.Abstractions.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleShopD.Application.Commands.Orders.Cancel
 {
@@ -13,7 +8,7 @@ namespace SimpleShopD.Application.Commands.Orders.Cancel
     {
         private readonly IOrderRepository _orderRepository;
 
-        public CancelOrderHandler(IOrderRepository orderRepository) 
+        public CancelOrderHandler(IOrderRepository orderRepository)
             => _orderRepository = orderRepository;
 
         public async Task HandleAsync(CancelOrder command)

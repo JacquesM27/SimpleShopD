@@ -1,5 +1,4 @@
-﻿using SimpleShopD.Application.Commands.Orders.SharedDto;
-using SimpleShopD.Application.Exceptions;
+﻿using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
@@ -10,7 +9,7 @@ namespace SimpleShopD.Application.Commands.Orders.ChangeDelivery
     {
         private readonly IOrderRepository _orderRepository;
 
-        public ChangeDeliveryDetailsHandler(IOrderRepository orderRepository) 
+        public ChangeDeliveryDetailsHandler(IOrderRepository orderRepository)
             => _orderRepository = orderRepository;
 
         public async Task HandleAsync(ChangeDeliveryDetails command)
@@ -27,10 +26,10 @@ namespace SimpleShopD.Application.Commands.Orders.ChangeDelivery
             await _orderRepository.UpdateAsync(order);
         }
 
-        private static Fullname MapFullname(string firstname, string lastname) 
+        private static Fullname MapFullname(string firstname, string lastname)
             => new(firstname, lastname);
 
-        private static Address MapAddress(OrderAddress orderAddress)
+        private static Domain.Shared.ValueObjects.Address MapAddress(Commands.SharedDto.Address orderAddress)
             => new(
                 orderAddress.Country,
                 orderAddress.City,

@@ -7,7 +7,7 @@ namespace SimpleShopD.Shared.Queries
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public InMemoryQueryDispatcher(IServiceProvider serviceProvider) 
+        public InMemoryQueryDispatcher(IServiceProvider serviceProvider)
             => _serviceProvider = serviceProvider;
 
         public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
@@ -17,7 +17,7 @@ namespace SimpleShopD.Shared.Queries
             var handler = scope.ServiceProvider.GetRequiredService(handlerType);
 
             return await (Task<TResult>)handlerType.GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync))?
-                .Invoke(handler, new[] {query});
+                .Invoke(handler, new[] { query });
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SimpleShopD.Application.Commands.Products.Delete
             var product = await _productRepository.GetAsync(command.Id)
                 ?? throw new ProductDoesNotExistException(command.Id.ToString());
 
-            if(await _orderRepository.ProductExistsOnSomeOrder(command.Id))
+            if (await _orderRepository.ProductExistsOnSomeOrder(command.Id))
                 throw new ProductExistsOnSomeOrderException(command.Id.ToString());
 
             await _productRepository.DeleteAsync(product);
