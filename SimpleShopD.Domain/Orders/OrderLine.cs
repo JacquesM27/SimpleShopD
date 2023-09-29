@@ -3,14 +3,14 @@ using SimpleShopD.Domain.Shared.Base;
 
 namespace SimpleShopD.Domain.Orders
 {
-    public class OrderLine<T> : Entity<T> where T : notnull
+    public class OrderLine : Entity<Guid>
     {
         public int No { get; private set; }
         public decimal SalePrice { get; }
         public decimal Quantity { get; private set; }
-        public T ProductId { get; }
+        public Guid ProductId { get; }
 
-        public OrderLine(T id, int no, decimal salePrice, decimal quantity, T productId)
+        internal OrderLine(Guid id, int no, decimal salePrice, decimal quantity, Guid productId)
             : base(id)
         {
             if (no < 0)

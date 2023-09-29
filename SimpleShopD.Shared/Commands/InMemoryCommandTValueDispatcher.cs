@@ -3,17 +3,17 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Shared.Commands
 {
-    internal sealed class InMemoryCommandIdDispatcher : ICommandIdDispatcher
+    internal sealed class InMemoryCommandTValueDispatcher : ICommandTValueDispatcher
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public InMemoryCommandIdDispatcher(IServiceProvider serviceProvider)
+        public InMemoryCommandTValueDispatcher(IServiceProvider serviceProvider)
             => _serviceProvider = serviceProvider;
 
-        public async Task DispatchAsync<TCommand, TId>(TCommand command) where TCommand : class, ICommand
+        public async Task DispatchAsync<TCommand, TValue>(TCommand command) where TCommand : class, ICommand
         {
             using var scope = _serviceProvider.CreateScope();
-            var handler = scope.ServiceProvider.GetRequiredService<ICommandIdHandler<TCommand, TId>>();
+            var handler = scope.ServiceProvider.GetRequiredService<ICommandTValueHandler<TCommand, TValue>>();
 
             await handler.HandleAsync(command);
         }

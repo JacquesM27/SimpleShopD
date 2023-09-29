@@ -2,5 +2,5 @@
 
 namespace SimpleShopD.Application.Commands.Users.ResetPasswordToken
 {
-    public sealed record SetPasswordResetToken(Guid UserId) : ICommand;
+    public sealed record GeneratePasswordResetToken(Guid UserId) : ICommand;
 }

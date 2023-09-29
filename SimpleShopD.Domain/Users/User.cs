@@ -8,7 +8,7 @@ using SimpleShopD.Domain.Users.ValueObjects;
 
 namespace SimpleShopD.Domain.Users
 {
-    public sealed class User<T> : Entity<T> where T : notnull
+    public sealed class User : AggregateRoot<Guid>
     {
         public Fullname Fullname { get; }
         public Email Email { get; }
@@ -20,25 +20,18 @@ namespace SimpleShopD.Domain.Users
         public Token? RefreshToken { get; private set; }
         public Token? ResetPasswordToken { get; private set; }
 
-        internal User(T id, Fullname fullname, Email email, Password password, StatusOfAccount status, RoleOfUser roleOfUser, HashSet<Address> addresses, Token? activationToken, Token? refreshToken, Token? resetPasswordToken)
+        public User(Guid id, Fullname fullname, Email email, Password password,
+            RoleOfUser roleOfUser, HashSet<Address> addresses)
             : base(id)
         {
             Fullname = fullname;
             Email = email;
             Password = password;
-            Status = status;
+            Status = AccountStatus.Inactive;
             RoleOfUser = roleOfUser;
             Addresses = addresses;
-            RefreshToken = refreshToken;
-            ActivationToken = activationToken;
-            ResetPasswordToken = resetPasswordToken;
+            ActivationToken = TokenType.Activation;
         }
-
-        public static User<T> RegisterAdmin(T id, Fullname fullname, Email email, Password password, HashSet<Address> addresses)
-            => new(id, fullname, email, password, AccountStatus.Inactive, UserRole.Admin, addresses, TokenType.Activation, null, null);
-
-        public static User<T> RegisterUser(T id, Fullname fullname, Email email, Password password, HashSet<Address> addresses)
-            => new(id, fullname, email, password, AccountStatus.Inactive, UserRole.User, addresses, TokenType.Activation, null, null);
 
         public void GeneratePasswordResetToken()
             => ResetPasswordToken = TokenType.ResetPassword;
@@ -72,7 +65,7 @@ namespace SimpleShopD.Domain.Users
             ActivationToken = null;
         }
 
-        public LoginToken Login(string password, ITokenProvider<T> tokenProvider)
+        public LoginToken Login(string password, ITokenProvider tokenProvider)
         {
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
@@ -81,7 +74,10 @@ namespace SimpleShopD.Domain.Users
         }
 
         public void ChangeRole(UserRole userRole)
-            => RoleOfUser = userRole;
+        {
+            if (RoleOfUser.UserRole != userRole)
+                RoleOfUser = userRole;
+        }
 
         public void AddAddress(Address address)
             => Addresses.Add(address);

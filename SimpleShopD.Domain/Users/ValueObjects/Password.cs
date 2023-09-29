@@ -6,7 +6,7 @@ namespace SimpleShopD.Domain.Users.ValueObjects
 {
     public sealed record Password
     {
-        private readonly int _minumumPasswordLenght = 8;
+        private readonly int _minumumPasswordLength = 8;
 
         public byte[] Hash { get; }
         public byte[] Salt { get; }
@@ -14,7 +14,7 @@ namespace SimpleShopD.Domain.Users.ValueObjects
         public Password(string password)
         {
             if (!HasPasswordValidPolicy(password))
-                throw new PasswordPolicyException($"The password does not meet security requirements. It should have a minimum of {_minumumPasswordLenght} characters, contain lowercase and uppercase letters, numbers and special characters");
+                throw new PasswordPolicyException($"The password does not meet security requirements. It should have a minimum of {_minumumPasswordLength} characters, contain lowercase and uppercase letters, numbers and special characters");
 
             using var hmac = new HMACSHA512();
             Salt = hmac.Key;
@@ -31,7 +31,7 @@ namespace SimpleShopD.Domain.Users.ValueObjects
 
         private bool HasPasswordValidPolicy(string password)
         {
-            if (password.Length < _minumumPasswordLenght)
+            if (password.Length < _minumumPasswordLength)
                 return false;
 
             return password.Any(char.IsUpper) &&

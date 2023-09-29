@@ -7,20 +7,20 @@ using SimpleShopD.Domain.Users;
 
 namespace SimpleShopD.Domain.Orders
 {
-    public sealed class Order<T> : AggregateRoot<T> where T : notnull
+    public sealed class Order : AggregateRoot<Guid>
     {
         public DateTime CreationDate { get; }
         public DateTime LastModifiedDate { get; private set; }
-        public User<T> User { get; private set; }
+        public User User { get; private set; }
         public Address DeliveryAddress { get; private set; }
         public Fullname ReceiverFullname { get; private set; }
         public StatusOfOrder CurrentStatus { get; private set; }
-        public IList<OrderLine<T>> OrderLines { get; private set; }
+        public IList<OrderLine> OrderLines { get; private set; }
 
         private decimal TotalPrice { get => OrderLines.Sum(x => x.SalePrice); }
         private int NextNo { get => OrderLines.Max(x => x.No); }
 
-        public Order(T id, DateTime creationDate, User<T> user, Address deliveryAddress, Fullname receiverFullname, IEnumerable<OrderLine<T>> orderLines) : base(id)
+        public Order(Guid id, DateTime creationDate, User user, Address deliveryAddress, Fullname receiverFullname, IList<OrderLine> orderLines) : base(id)
         {
             CreationDate = creationDate;
             User = user;
@@ -28,7 +28,7 @@ namespace SimpleShopD.Domain.Orders
             DeliveryAddress = deliveryAddress;
             ReceiverFullname = receiverFullname;
             CurrentStatus = OrderStatus.NotPaid;
-            OrderLines = orderLines.ToList();
+            OrderLines = orderLines;
         }
 
         public void PayOrder(decimal amount)
@@ -93,13 +93,13 @@ namespace SimpleShopD.Domain.Orders
             LastModifiedDate = DateTime.UtcNow;
         }
 
-        public void AddOrderLine(T id, T productId, decimal quantity, decimal price)
+        public void AddOrderLine(Guid id, Guid productId, decimal quantity, decimal price)
         {
-            OrderLine<T> orderLine = new(id, NextNo, price, quantity, productId);
+            OrderLine orderLine = new(id, NextNo, price, quantity, productId);
             AddOrderLine(orderLine);
         }
 
-        private void AddOrderLine(OrderLine<T> orderLine)
+        private void AddOrderLine(OrderLine orderLine)
         {
             var existingLine = OrderLines.FirstOrDefault(x => x.ProductId.Equals(orderLine.ProductId) && x.SalePrice == orderLine.SalePrice);
 
@@ -119,12 +119,7 @@ namespace SimpleShopD.Domain.Orders
             RemoveLine(orderLine);
         }
 
-        public void RemoveOrderLine(OrderLine<T> orderLine)
-        {
-            RemoveLine(orderLine);
-        }
-
-        private void RemoveLine(OrderLine<T> orderLine)
+        private void RemoveLine(OrderLine orderLine)
         {
             if (CurrentStatus.Value is not OrderStatus.NotPaid)
                 throw new RemoveLineException($"Cannot remove line when status is {CurrentStatus.Value}.");

@@ -7,7 +7,7 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Orders.Add
 {
-    internal sealed class AddOrderHandler : ICommandIdHandler<AddOrder, Guid>
+    internal sealed class AddOrderHandler : ICommandTValueHandler<AddOrder, Guid>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
