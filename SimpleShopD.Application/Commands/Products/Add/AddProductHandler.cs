@@ -17,7 +17,7 @@ namespace SimpleShopD.Application.Commands.Products.Add
             if (await _productRepository.ExistsByTitleAsync(command.Title))
                 throw new ProductAlreadyExistException(command.Title);
 
-            var product = new Product<Guid>(
+            var product = new Product(
                 id: Guid.NewGuid(),
                 title: command.Title,
                 description: command.Description,

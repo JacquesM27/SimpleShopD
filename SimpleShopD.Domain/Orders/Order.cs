@@ -20,7 +20,7 @@ namespace SimpleShopD.Domain.Orders
         private decimal TotalPrice { get => OrderLines.Sum(x => x.SalePrice); }
         private int NextNo { get => OrderLines.Max(x => x.No); }
 
-        public Order(Guid id, DateTime creationDate, User user, Address deliveryAddress, Fullname receiverFullname, IList<OrderLine> orderLines) : base(id)
+        public Order(Guid id, DateTime creationDate, User user, Address deliveryAddress, Fullname receiverFullname) : base(id)
         {
             CreationDate = creationDate;
             User = user;
@@ -28,7 +28,6 @@ namespace SimpleShopD.Domain.Orders
             DeliveryAddress = deliveryAddress;
             ReceiverFullname = receiverFullname;
             CurrentStatus = OrderStatus.NotPaid;
-            OrderLines = orderLines;
         }
 
         public void PayOrder(decimal amount)

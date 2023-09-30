@@ -27,29 +27,17 @@ namespace SimpleShopD.Application.Commands.Orders.Add
 
             var address = command.OrderAddress.MapToDomainAddress();
             var fullname = MapFullname(command);
-            var lines = await MapLines(command);
 
-            var order = new Order<Guid>(Guid.NewGuid(), DateTime.UtcNow, user, address, fullname, lines);
+            var order = new Order(Guid.NewGuid(), DateTime.UtcNow, user, address, fullname);
+            command.OrderLines.ToList().ForEach(async x =>
+            {
+                if (!await _productRepository.DoesExist(x.ProductId))
+                        throw new ProductDoesNotExistException(x.ProductId.ToString());
+                order.AddOrderLine(Guid.NewGuid(), x.ProductId, x.Quantity, x.Price);
+            });
+
             var id = await _orderRepository.AddAsync(order);
             return id;
-        }
-
-        private async Task<List<OrderLine<Guid>>> MapLines(AddOrder command)
-        {
-            if (!await _productRepository.DoAllExist(command.OrderLines.Select(x => x.ProductId)))
-                throw new ProductDoesNotExistException("Some products ids from collection does not exist.");
-
-            var lines = command.OrderLines
-                .Select((line, index) =>
-                    new OrderLine<Guid>(
-                        Guid.NewGuid(),
-                        index + 1,
-                        line.Price,
-                        line.Quantity,
-                        line.ProductId))
-                .ToList();
-
-            return lines;
         }
 
         private static Fullname MapFullname(AddOrder command)
