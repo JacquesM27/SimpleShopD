@@ -2,6 +2,8 @@
 using SimpleShopD.Domain.Products;
 using SimpleShopD.Domain.Products.Exceptions;
 using FluentAssertions;
+using SimpleShopD.Domain.Products.ValueObjects;
+using System.Diagnostics;
 
 namespace SimpleShopD.Domain.Tests
 {
@@ -11,8 +13,13 @@ namespace SimpleShopD.Domain.Tests
         public void NewProduct_ForEmptyTitle_ShouldThrowEmptyTitleExeption()
         {
             // Arrange
+            string title = string.Empty;
+            string description = "Some not empty description";
+            decimal price = 61;
+            Guid id = Guid.NewGuid();
+
             // Act
-            var exception = Record.Exception(() => new Product(Guid.NewGuid(), string.Empty, string.Empty, ProductType.Product, 0));
+            var exception = Record.Exception(() => new Product(id, title, description, ProductType.Product, price));
             
             // Assert
             exception.Should().BeOfType<EmptyTitleExeption>();
@@ -24,8 +31,12 @@ namespace SimpleShopD.Domain.Tests
         {
             // Arrange
             string title = "Some not empty title";
+            string description = string.Empty;
+            decimal price = 61;
+            Guid id = Guid.NewGuid();
+
             // Act
-            var exception = Record.Exception(() => new Product(Guid.NewGuid(), title, string.Empty, ProductType.Product, 0));
+            var exception = Record.Exception(() => new Product(id, title, description, ProductType.Product, price));
 
             // Assert
             exception.Should().BeOfType<EmptyDescriptionException>();
@@ -38,8 +49,11 @@ namespace SimpleShopD.Domain.Tests
             // Arrange
             string title = "Some not empty title";
             string description = "Some not empty description";
+            decimal price = -1;
+            Guid id = Guid.NewGuid();
+
             // Act
-            var exception = Record.Exception(() => new Product(Guid.NewGuid(), title, description, ProductType.Product, -1));
+            var exception = Record.Exception(() => new Product(id, title, description, ProductType.Product, price));
 
             // Assert
             exception.Should().BeOfType<IncorrectPriceValueException>();
@@ -52,8 +66,11 @@ namespace SimpleShopD.Domain.Tests
             // Arrange
             string title = "Some not empty title";
             string description = "Some not empty description";
+            decimal price = 61;
+            Guid id = Guid.NewGuid();
+
             // Act
-            var exception = Record.Exception(() => new Product(Guid.NewGuid(), title, description, ProductType.Product, 0));
+            var exception = Record.Exception(() => new Product(id, title, description, ProductType.Product, price));
 
             // Assert
             exception.Should().Be(null);

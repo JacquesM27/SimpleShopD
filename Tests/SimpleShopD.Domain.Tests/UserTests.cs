@@ -1,14 +1,138 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentAssertions;
+using SimpleShopD.Domain.Enum;
+using SimpleShopD.Domain.Shared.Exceptions;
+using SimpleShopD.Domain.Users;
+using SimpleShopD.Domain.Users.Exceptions;
+using System.Net.Mail;
 
 namespace SimpleShopD.Domain.Tests
 {
     public class UserTests
     {
-        //[Fact]
+        [Fact]
+        public void NewUser_ForEmptyFirstName_ShouldThrowEmptyFullnameException()
+        {
+            // Arrange
+            string firstName = string.Empty;
+            string lastName = "Doe";
+            string emailAddress = "john.doe@ssd.com";
+            string password = "12345Abc@";
 
+            // Act
+            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Shared.ValueObjects.Fullname(firstName,
+                lastName), emailAddress, password, UserRole.User, null));
+
+            // Assert
+            exception.Should().BeOfType<EmptyFullnameException>();
+            exception.Message.Should().Be("Firstname cannot be empty");
+        }
+
+        [Fact]
+        public void NewUser_ForEmptyLastName_ShouldThrowEmptyFullnameException()
+        {
+            // Arrange
+            string firstName = "John";
+            string lastName = string.Empty;
+            string emailAddress = "john.doe@ssd.com";
+            string password = "12345Abc@";
+
+            // Act
+            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Shared.ValueObjects.Fullname(firstName,
+                lastName), emailAddress, password, UserRole.User, null));
+
+            // Assert
+            exception.Should().BeOfType<EmptyFullnameException>();
+            exception.Message.Should().Be("Lastname cannot be empty");
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(1000)]
+        public void NewUser_ForOutOfLengthRangeFirstName_ShouldThrowEmptyFullnameException(int firstNameLength)
+        {
+            // Arrange
+            string firstName = GenerateRandomText(firstNameLength);
+            string lastName = "Doe";
+            string emailAddress = "john.doe@ssd.com";
+            string password = "12345Abc@";
+
+            // Act
+            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Shared.ValueObjects.Fullname(firstName,
+                lastName), emailAddress, password, UserRole.User, null));
+
+            // Assert
+            exception.Should().BeOfType<InvalidFullnameLengthException>();
+            exception.Message.Should().Be("Firstname length must be longer than 2 and shorter than 100");
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(1000)]
+        public void NewUser_ForOutOfLengthRangeLastName_ShouldThrowEmptyFullnameException(int lastNameLength)
+        {
+            // Arrange
+            string firstName = "John";
+            string lastName = GenerateRandomText(lastNameLength);
+            string emailAddress = "john.doe@ssd.com";
+            string password = "12345Abc@";
+
+            // Act
+            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Shared.ValueObjects.Fullname(firstName,
+                lastName), emailAddress, password, UserRole.User, null));
+
+            // Assert
+            exception.Should().BeOfType<InvalidFullnameLengthException>();
+            exception.Message.Should().Be("Lastname length must be longer than 2 and shorter than 100");
+        }
+
+        [Fact]
+        public void NewUser_ForInvalidEmail_ShouldThrowInvalidEmailException()
+        {
+            // Arrange
+            string firstName = "John";
+            string lastName = "Doe";
+            string emailAddress = "JohnDoe";
+            string password = "12345Abc@";
+
+            // Act
+            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Shared.ValueObjects.Fullname(firstName,
+                lastName), emailAddress, password, UserRole.User, null));
+
+            // Assert
+            exception.Should().BeOfType<InvalidEmailException>();
+            exception.Message.Should().Be($"The provided value {emailAddress} is not an email address");
+        }
+
+        [Fact]
+        public void NewUser_ForEmptyPassword_ShouldThrowPasswordPolicyException()
+        {
+            // Arrange
+            string firstName = "John";
+            string lastName = "Doe";
+            string emailAddress = "john.doe@ssd.com";
+            string password = string.Empty;
+
+            // Act
+            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Shared.ValueObjects.Fullname(firstName,
+                lastName), emailAddress, password, UserRole.User, null));
+
+            // Assert
+            exception.Should().BeOfType<PasswordPolicyException>();
+            exception.Message.Should().Be($"The password does not meet security requirements. It should have a minimum of 8 characters, contain lowercase and uppercase letters, numbers and special characters");
+        }
+
+        private static string GenerateRandomText(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(result);
+        }
     }
 }

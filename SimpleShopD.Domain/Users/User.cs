@@ -21,7 +21,7 @@ namespace SimpleShopD.Domain.Users
         public Token? ResetPasswordToken { get; private set; }
 
         public User(Guid id, Fullname fullname, Email email, Password password,
-            RoleOfUser roleOfUser, HashSet<Address> addresses)
+            RoleOfUser roleOfUser, HashSet<Address>? addresses)
             : base(id)
         {
             Fullname = fullname;
@@ -29,7 +29,7 @@ namespace SimpleShopD.Domain.Users
             Password = password;
             Status = AccountStatus.Inactive;
             RoleOfUser = roleOfUser;
-            Addresses = addresses;
+            Addresses = addresses is null ? new HashSet<Address>() : addresses;
             ActivationToken = TokenType.Activation;
         }
 
@@ -49,7 +49,7 @@ namespace SimpleShopD.Domain.Users
         {
             if (!Password.VerifyPassword(oldPassword))
                 throw new ChangingPasswordException("Invalid old password");
-            Password = new Password(newPassword);
+            Password = newPassword;
         }
 
         public void GenerateRefreshToken()
