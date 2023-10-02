@@ -9,7 +9,7 @@ namespace SimpleShopD.Domain.Products.ValueObjects
         public Title(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new EmptyTitleExeption(nameof(value));
+                throw new EmptyTitleExeption("Title cannot be empty.");
 
             Value = value;
         }

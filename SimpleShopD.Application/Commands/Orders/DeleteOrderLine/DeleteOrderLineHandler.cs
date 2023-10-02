@@ -16,7 +16,7 @@ namespace SimpleShopD.Application.Commands.Orders.DeleteOrderLine
             var order = await _orderRepository.GetAsync(command.OrderId)
                 ?? throw new OrderDoesNotExistException(command.OrderId.ToString());
 
-            order.RemoveOrderLine(command.No);
+            order.RemoveOrderLine(command.LineId);
         }
     }
 }

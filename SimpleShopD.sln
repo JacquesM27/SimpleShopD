@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Application", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D4C0FA7B-DF93-4F41-A753-B9D7DBFDE06A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Shared.Abstractions", "SimpleShopD.Shared.Abstractions\SimpleShopD.Shared.Abstractions.csproj", "{367D9694-B7FB-4A00-9DDD-430C8BBA0923}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Shared.Abstractions", "SimpleShopD.Shared.Abstractions\SimpleShopD.Shared.Abstractions.csproj", "{367D9694-B7FB-4A00-9DDD-430C8BBA0923}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Shared", "SimpleShopD.Shared\SimpleShopD.Shared.csproj", "{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Shared", "SimpleShopD.Shared\SimpleShopD.Shared.csproj", "{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0572DDF2-A297-4320-8D4F-497C1A1378DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Domain.Tests", "Tests\SimpleShopD.Domain.Tests\SimpleShopD.Domain.Tests.csproj", "{2D3851A3-2E4D-484B-9197-AB8946D4D7C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D3851A3-2E4D-484B-9197-AB8946D4D7C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3851A3-2E4D-484B-9197-AB8946D4D7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3851A3-2E4D-484B-9197-AB8946D4D7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3851A3-2E4D-484B-9197-AB8946D4D7C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{367D9694-B7FB-4A00-9DDD-430C8BBA0923} = {D4C0FA7B-DF93-4F41-A753-B9D7DBFDE06A}
 		{D7FAB8EF-6111-4161-A605-2F4232FCC8D9} = {D4C0FA7B-DF93-4F41-A753-B9D7DBFDE06A}
+		{2D3851A3-2E4D-484B-9197-AB8946D4D7C3} = {0572DDF2-A297-4320-8D4F-497C1A1378DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E33007BC-AE7C-4913-9BFB-9CA48EA03A79}

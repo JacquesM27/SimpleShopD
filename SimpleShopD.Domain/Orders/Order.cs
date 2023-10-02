@@ -110,9 +110,9 @@ namespace SimpleShopD.Domain.Orders
             LastModifiedDate = DateTime.UtcNow;
         }
 
-        public void RemoveOrderLine(int no)
+        public void RemoveOrderLine(Guid id)
         {
-            var orderLine = OrderLines.First(x => x.No == no)
+            var orderLine = OrderLines.First(x => x.Id == id)
                 ?? throw new RemoveLineException("Line was not found.");
 
             RemoveLine(orderLine);

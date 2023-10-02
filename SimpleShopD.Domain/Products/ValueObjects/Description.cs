@@ -9,7 +9,7 @@ namespace SimpleShopD.Domain.Products.ValueObjects
         public Description(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new EmptyDescriptionException("Description cannot be empty");
+                throw new EmptyDescriptionException("Description cannot be empty.");
 
             Value = value;
         }

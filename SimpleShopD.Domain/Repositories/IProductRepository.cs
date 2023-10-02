@@ -9,7 +9,6 @@ namespace SimpleShopD.Domain.Repositories
         Task<bool> ExistsByTitleAsync(string name, CancellationToken cancellationToken = default);
         Task DeleteAsync(Product product, CancellationToken cancellationToken = default);
         Task<bool> DoesExist(Guid id, CancellationToken cancellationToken = default);
-        Task<bool> DoAllExist(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
         Task<Guid> UpdateAsync(Product product);
     }
 }
