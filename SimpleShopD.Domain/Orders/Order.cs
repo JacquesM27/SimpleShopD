@@ -3,7 +3,6 @@ using SimpleShopD.Domain.Orders.Exceptions;
 using SimpleShopD.Domain.Orders.ValueObjects;
 using SimpleShopD.Domain.Shared.Base;
 using SimpleShopD.Domain.Shared.ValueObjects;
-using SimpleShopD.Domain.Users;
 
 namespace SimpleShopD.Domain.Orders
 {
@@ -11,7 +10,7 @@ namespace SimpleShopD.Domain.Orders
     {
         public DateTime CreationDate { get; }
         public DateTime LastModifiedDate { get; private set; }
-        public User User { get; private set; }
+        public Guid UserId { get; private set; }
         public Address DeliveryAddress { get; private set; }
         public Fullname ReceiverFullname { get; private set; }
         public StatusOfOrder CurrentStatus { get; private set; }
@@ -20,14 +19,15 @@ namespace SimpleShopD.Domain.Orders
         private decimal TotalPrice { get => OrderLines.Sum(x => x.SalePrice); }
         private int NextNo { get => OrderLines.Max(x => x.No); }
 
-        public Order(Guid id, DateTime creationDate, User user, Address deliveryAddress, Fullname receiverFullname) : base(id)
+        public Order(Guid id, Guid userId, Address deliveryAddress, Fullname receiverFullname) : base(id)
         {
-            CreationDate = creationDate;
-            User = user;
+            CreationDate = DateTime.UtcNow;
+            UserId = userId;
             LastModifiedDate = DateTime.UtcNow;
             DeliveryAddress = deliveryAddress;
             ReceiverFullname = receiverFullname;
             CurrentStatus = OrderStatus.NotPaid;
+            OrderLines = new List<OrderLine>();
         }
 
         public void PayOrder(decimal amount)

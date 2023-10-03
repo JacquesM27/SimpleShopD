@@ -10,5 +10,6 @@ namespace SimpleShopD.Domain.Repositories
         Task<bool> IsTheEmailUniqueAsync(string email, CancellationToken cancellation = default);
         Task UpdateAsync(User user, CancellationToken cancellation = default);
         Task<bool> IsAdminAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> DoesExist(Guid id, CancellationToken cancellationToken = default);
     }
 }

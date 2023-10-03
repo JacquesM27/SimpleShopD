@@ -22,13 +22,13 @@ namespace SimpleShopD.Application.Commands.Orders.Add
 
         public async Task<Guid> HandleAsync(AddOrder command)
         {
-            var user = await _userRepository.GetAsync(command.UserId)
-                ?? throw new UserDoesNotExistException(command.UserId.ToString());
+           if(!await _userRepository.DoesExist(command.UserId))
+                throw new UserDoesNotExistException(command.UserId.ToString());
 
             var address = command.OrderAddress.MapToDomainAddress();
             var fullname = MapFullname(command);
 
-            var order = new Order(Guid.NewGuid(), DateTime.UtcNow, user, address, fullname);
+            var order = new Order(Guid.NewGuid(), command.UserId, address, fullname);
             command.OrderLines.ToList().ForEach(async x =>
             {
                 if (!await _productRepository.DoesExist(x.ProductId))
