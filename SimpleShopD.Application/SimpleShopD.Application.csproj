@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<InternalsVisibleTo Include="SimpleShopD.Application.Tests" />
     <ProjectReference Include="..\SimpleShopD.Domain\SimpleShopD.Domain.csproj" />
   </ItemGroup>
 

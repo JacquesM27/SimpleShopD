@@ -1,0 +1,66 @@
+﻿using FluentAssertions;
+using NSubstitute;
+using SimpleShopD.Application.Commands.Users.RoleChange;
+using SimpleShopD.Application.Exceptions;
+using SimpleShopD.Domain.Enum;
+using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Users;
+using SimpleShopD.Shared.Abstractions.Commands;
+
+namespace SimpleShopD.Application.Tests.Commands.Users
+{
+    public class ChangeRoleTests
+    {
+        private readonly ICommandHandler<ChangeRole> _handler;
+        private readonly IUserRepository _userRepository;
+
+        public ChangeRoleTests()
+        {
+            _userRepository = Substitute.For<IUserRepository>();
+            _handler = new ChangeRoleCommand(_userRepository);
+        }
+        private async Task Act(ChangeRole command)
+            => await _handler.HandleAsync(command);
+
+        [Fact]
+        public async Task ChangeRole_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
+        {
+            // Arrange
+            Guid userId = Guid.NewGuid();
+            var command = new ChangeRole(userId, UserRole.User);
+
+            // Act
+            var exception = await Record.ExceptionAsync(() => Act(command));
+
+            // Assert
+            exception.Should().BeOfType<UserDoesNotExistException>();
+            exception.Message.Should().Be(userId.ToString());
+        }
+
+        [Fact]
+        public async Task ChangeRole_ForExistingUser_ShouldNotThrowException()
+        {
+            // Arrange
+            Guid userId = Guid.NewGuid();
+            var command = new ChangeRole(userId, UserRole.User);
+            _userRepository.GetAsync(userId).Returns(CreateUser(UserRole.User));
+
+            // Act
+            var exception = await Record.ExceptionAsync(() => Act(command));
+
+            // Assert
+            exception.Should().BeNull();
+        }
+
+        private static User CreateUser(UserRole role)
+        {
+            string firstName = "John";
+            string lastName = "Doe";
+            string emailAddress = "john.doe@ssd.com";
+            string password = "JohnDoe123!";
+
+            return new(Guid.NewGuid(), new Domain.Shared.ValueObjects.Fullname(firstName,
+                lastName), emailAddress, password, role, null);
+        }
+    }
+}
