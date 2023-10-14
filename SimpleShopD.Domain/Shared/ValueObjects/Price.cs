@@ -1,6 +1,6 @@
 ﻿using SimpleShopD.Domain.Products.Exceptions;
 
-namespace SimpleShopD.Domain.Products.ValueObjects
+namespace SimpleShopD.Domain.Shared.ValueObjects
 {
     public sealed record Price
     {

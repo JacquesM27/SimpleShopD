@@ -21,6 +21,12 @@ namespace SimpleShopD.Domain.Users.ValueObjects
             Hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
 
+        public Password(byte[] hash, byte[] salt) 
+        {
+            Hash = hash;
+            Salt = salt;
+        }
+
         public bool VerifyPassword(string password)
         {
             using var hmac = new HMACSHA512(Salt);

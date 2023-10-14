@@ -1,5 +1,6 @@
 ﻿using SimpleShopD.Domain.Products.ValueObjects;
 using SimpleShopD.Domain.Shared.Base;
+using SimpleShopD.Domain.Shared.ValueObjects;
 
 namespace SimpleShopD.Domain.Products
 {

@@ -53,7 +53,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
                 UserRole.Admin, new List<Address>(), "User", authorId);
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
-            _userRepository.GetAsync(authorId).Returns(CreateUser(UserRole.Admin));
+            _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(UserRole.Admin));
 
             // Act
             var userId = await Act(command);
@@ -70,7 +70,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
                 UserRole.Admin, new List<Address>(), "User", authorId);
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
-            _userRepository.GetAsync(authorId).Returns(CreateUser(UserRole.User));
+            _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(UserRole.User));
 
             // Act
             var exception = await Record.ExceptionAsync(async () => await Act(command));
@@ -94,17 +94,6 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Assert
             exception.Should().BeOfType<CannotCreateUserPolicyException>();
             exception.Message.Should().Be(string.Empty);
-        }
-
-        private static User CreateUser(UserRole role)
-        {
-            string firstName = "John";
-            string lastName = "Doe";
-            string emailAddress = "john.doe@ssd.com";
-            string password = "JohnDoe123!";
-
-            return new(Guid.NewGuid(), new Domain.Shared.ValueObjects.Fullname(firstName,
-                lastName), emailAddress, password, role, null);
         }
     }
 }

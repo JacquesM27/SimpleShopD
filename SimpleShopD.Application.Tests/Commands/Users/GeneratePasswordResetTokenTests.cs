@@ -1,33 +1,32 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using SimpleShopD.Application.Commands.Users.RoleChange;
+using SimpleShopD.Application.Commands.Users.ResetPasswordToken;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Repositories;
-using SimpleShopD.Domain.Users;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
 {
-    public class ChangeRoleTests
+    public class GeneratePasswordResetTokenTests
     {
-        private readonly ICommandHandler<ChangeRole> _handler;
+        private readonly ICommandHandler<GeneratePasswordResetToken> _handler;
         private readonly IUserRepository _userRepository;
 
-        public ChangeRoleTests()
+        public GeneratePasswordResetTokenTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
-            _handler = new ChangeRoleCommand(_userRepository);
+            _handler = new GeneratePasswordResetTokenCommand(_userRepository);
         }
-        private async Task Act(ChangeRole command)
+        private async Task Act(GeneratePasswordResetToken command)
             => await _handler.HandleAsync(command);
 
         [Fact]
-        public async Task ChangeRole_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
+        public async Task GeneratePasswordResetToken_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
         {
             // Arrange
             Guid userId = Guid.NewGuid();
-            var command = new ChangeRole(userId, UserRole.User);
+            var command = new GeneratePasswordResetToken(userId);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
@@ -38,11 +37,11 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        public async Task ChangeRole_ForExistingUser_ShouldNotThrowException()
+        public async Task GeneratePasswordResetToken_ForExistingUser_ShouldNotThrowException()
         {
             // Arrange
             Guid userId = Guid.NewGuid();
-            var command = new ChangeRole(userId, UserRole.User);
+            var command = new GeneratePasswordResetToken(userId);
             _userRepository.GetAsync(userId).Returns(TestUserExtension.CreateValidUser(UserRole.User));
 
             // Act

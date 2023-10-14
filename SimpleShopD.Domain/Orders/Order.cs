@@ -8,16 +8,16 @@ namespace SimpleShopD.Domain.Orders
 {
     public sealed class Order : AggregateRoot<Guid>
     {
-        public DateTime CreationDate { get; }
-        public DateTime LastModifiedDate { get; private set; }
+        public DateTimeWrapper CreationDate { get; }
+        public DateTimeWrapper LastModifiedDate { get; private set; }
         public Guid UserId { get; private set; }
         public Address DeliveryAddress { get; private set; }
         public Fullname ReceiverFullname { get; private set; }
         public StatusOfOrder CurrentStatus { get; private set; }
         public IList<OrderLine> OrderLines { get; private set; }
 
-        private decimal TotalPrice { get => OrderLines.Sum(x => x.SalePrice); }
-        private int NextNo { get => OrderLines.Max(x => x.No); }
+        private decimal TotalPrice { get => OrderLines.Sum(x => x.Price); }
+        private int NextNo { get => OrderLines.Max(x => x.No) + 1; }
 
         public Order(Guid id, Guid userId, Address deliveryAddress, Fullname receiverFullname) : base(id)
         {
@@ -100,7 +100,7 @@ namespace SimpleShopD.Domain.Orders
 
         private void AddOrderLine(OrderLine orderLine)
         {
-            var existingLine = OrderLines.FirstOrDefault(x => x.ProductId.Equals(orderLine.ProductId) && x.SalePrice == orderLine.SalePrice);
+            var existingLine = OrderLines.FirstOrDefault(x => x.ProductId.Equals(orderLine.ProductId) && x.Price == orderLine.Price);
 
             if (existingLine is not null)
                 existingLine.AddQuantity(orderLine.Quantity);
