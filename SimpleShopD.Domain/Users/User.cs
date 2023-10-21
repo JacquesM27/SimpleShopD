@@ -70,6 +70,8 @@ namespace SimpleShopD.Domain.Users
 
         public LoginToken Login(string password, ITokenProvider tokenProvider)
         {
+            if (Status == AccountStatus.Inactive)
+                throw new LoginOperationException("Account is not active");
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
             RefreshToken = TokenType.Refresh;
