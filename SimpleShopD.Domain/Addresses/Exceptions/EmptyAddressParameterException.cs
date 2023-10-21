@@ -1,6 +1,6 @@
 ﻿using SimpleShopD.Shared.Abstractions.Exceptions;
 
-namespace SimpleShopD.Domain.Shared.Exceptions
+namespace SimpleShopD.Domain.Addresses.Exceptions
 {
     public class EmptyAddressParameterException : CustomException
     {

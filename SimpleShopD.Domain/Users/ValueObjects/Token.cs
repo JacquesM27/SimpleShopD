@@ -21,6 +21,8 @@ namespace SimpleShopD.Domain.Users.ValueObjects
             };
         }
 
+        private Token() { }
+
         private static string GenerateToken()
         {
             using var rng = RandomNumberGenerator.Create();

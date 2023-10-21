@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleShopD.Domain.Orders;
 using SimpleShopD.Domain.Products;
+using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Domain.Users;
 using SimpleShopD.Infrastructure.EF.Config;
 
@@ -20,11 +21,13 @@ namespace SimpleShopD.Infrastructure.EF.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("shop");
-            var configuration = new WriteConfiguration();
-            modelBuilder.ApplyConfiguration<User>(configuration);
-            modelBuilder.ApplyConfiguration<Product>(configuration);
-            modelBuilder.ApplyConfiguration<Order>(configuration);
-            modelBuilder.ApplyConfiguration<OrderLine>(configuration);
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+            //var configuration = new WriteConfiguration();
+            //modelBuilder.ApplyConfiguration<Address>(configuration);
+            //modelBuilder.ApplyConfiguration<User>(configuration);
+            //modelBuilder.ApplyConfiguration<Product>(configuration);
+            //modelBuilder.ApplyConfiguration<Order>(configuration);
+            //modelBuilder.ApplyConfiguration<OrderLine>(configuration);
         }
     }
 }

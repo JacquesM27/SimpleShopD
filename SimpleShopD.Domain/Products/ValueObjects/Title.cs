@@ -11,6 +11,9 @@ namespace SimpleShopD.Domain.Products.ValueObjects
             if (string.IsNullOrWhiteSpace(value))
                 throw new EmptyTitleExeption("Title cannot be empty.");
 
+            if (value.Length > 100)
+                throw new InvalidTitleException("Title length must shorter than 100");
+
             Value = value;
         }
 

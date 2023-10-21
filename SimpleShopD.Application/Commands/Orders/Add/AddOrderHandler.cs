@@ -25,10 +25,9 @@ namespace SimpleShopD.Application.Commands.Orders.Add
            if(!await _userRepository.DoesExist(command.UserId))
                 throw new UserDoesNotExistException(command.UserId.ToString());
 
-            var address = command.OrderAddress.MapToDomainAddress();
             var fullname = MapFullname(command);
 
-            var order = new Order(Guid.NewGuid(), command.UserId, address, fullname);
+            var order = new Order(Guid.NewGuid(), command.UserId, command.OrderAddress, fullname);
             command.OrderLines.ToList().ForEach(async x =>
             {
                 if (!await _productRepository.DoesExist(x.ProductId))

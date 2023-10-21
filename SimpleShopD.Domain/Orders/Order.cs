@@ -8,10 +8,10 @@ namespace SimpleShopD.Domain.Orders
 {
     public sealed class Order : AggregateRoot<Guid>
     {
-        public DateTimeWrapper CreationDate { get; }
-        public DateTimeWrapper LastModifiedDate { get; private set; }
+        public DateTime CreationDate { get; }
+        public DateTime LastModifiedDate { get; private set; }
         public Guid UserId { get; private set; }
-        public Address DeliveryAddress { get; private set; }
+        public Guid AddressId { get; private set; }
         public Fullname ReceiverFullname { get; private set; }
         public StatusOfOrder CurrentStatus { get; private set; }
         public IList<OrderLine> OrderLines { get; private set; }
@@ -19,16 +19,18 @@ namespace SimpleShopD.Domain.Orders
         private decimal TotalPrice { get => OrderLines.Sum(x => x.Price); }
         private int NextNo { get => OrderLines.Max(x => x.No) + 1; }
 
-        public Order(Guid id, Guid userId, Address deliveryAddress, Fullname receiverFullname) : base(id)
+        public Order(Guid id, Guid userId, Guid addressId, Fullname receiverFullname) : base(id)
         {
             CreationDate = DateTime.UtcNow;
             UserId = userId;
             LastModifiedDate = DateTime.UtcNow;
-            DeliveryAddress = deliveryAddress;
+            AddressId = addressId;
             ReceiverFullname = receiverFullname;
             CurrentStatus = OrderStatus.NotPaid;
             OrderLines = new List<OrderLine>();
         }
+
+        private Order() : base(Guid.NewGuid()) { }
 
         public void PayOrder(decimal amount)
         {
@@ -40,11 +42,11 @@ namespace SimpleShopD.Domain.Orders
             LastModifiedDate = DateTime.UtcNow;
         }
 
-        public void ChangeDeliveryAddress(Address address)
+        public void ChangeDeliveryAddress(Guid addressId)
         {
             if (CurrentStatus.Value is not OrderStatus.NotPaid or not OrderStatus.Paid)
                 throw new ChangeAddressException("Order is pending od completed. Cannot change delivery address.");
-            DeliveryAddress = address;
+            AddressId = addressId;
         }
 
         public void ChangeReceiverFullname(Fullname receiverFullname)

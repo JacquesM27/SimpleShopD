@@ -1,4 +1,5 @@
-﻿using SimpleShopD.Domain.Enum;
+﻿using SimpleShopD.Domain.Addresses;
+using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Services.DTO;
 using SimpleShopD.Domain.Shared.Base;
@@ -15,13 +16,13 @@ namespace SimpleShopD.Domain.Users
         public Password Password { get; private set; }
         public StatusOfAccount Status { get; private set; }
         public RoleOfUser RoleOfUser { get; private set; }
-        public HashSet<Address> Addresses { get; private set; }
+        public IList<Address> Addresses { get; private set; }
         public Token? ActivationToken { get; private set; }
         public Token? RefreshToken { get; private set; }
         public Token? ResetPasswordToken { get; private set; }
 
         public User(Guid id, Fullname fullname, Email email, Password password,
-            RoleOfUser roleOfUser, HashSet<Address>? addresses)
+            RoleOfUser roleOfUser)
             : base(id)
         {
             Fullname = fullname;
@@ -29,9 +30,11 @@ namespace SimpleShopD.Domain.Users
             Password = password;
             Status = AccountStatus.Inactive;
             RoleOfUser = roleOfUser;
-            Addresses = addresses is null ? new HashSet<Address>() : addresses;
+            Addresses = new List<Address>();
             ActivationToken = TokenType.Activation;
         }
+
+        private User() : base(Guid.NewGuid()) { }
 
         public void GeneratePasswordResetToken()
             => ResetPasswordToken = TokenType.ResetPassword;
@@ -79,10 +82,14 @@ namespace SimpleShopD.Domain.Users
                 RoleOfUser = userRole;
         }
 
-        public void AddAddress(Address address)
-            => Addresses.Add(address);
+        public void AddAddress(Guid id, string country, string city, string zipCode, string street, string buildingNumber)
+            => Addresses.Add(new Address(id, country, city, zipCode, street, buildingNumber));
 
-        public void RemoveAddress(Address address)
-            => Addresses.Remove(address);
+        public void RemoveAddress(Guid id)
+        {
+            var address = Addresses.Where(x => x.Id == id).FirstOrDefault();
+            if (address is not null)
+                Addresses.Remove(address);
+        }
     }
 }

@@ -1,7 +1,6 @@
-﻿using SimpleShopD.Application.Commands.SharedDto;
-using SimpleShopD.Shared.Abstractions.Commands;
+﻿using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.AddressRemove
 {
-    public sealed record RemoveAddress(Guid UserId, Address Address) : ICommand;
+    public sealed record RemoveAddress(Guid UserId, Guid AddressId) : ICommand;
 }

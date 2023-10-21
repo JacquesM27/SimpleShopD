@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
+using SimpleShopD.Domain.Addresses.Exceptions;
 using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Shared.Exceptions;
 using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Domain.Users;
 using SimpleShopD.Domain.Users.Exceptions;
-using System.Net.Mail;
 
 namespace SimpleShopD.Domain.Tests
 {
@@ -21,7 +21,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, null));
+                lastName), emailAddress, password, UserRole.User));
 
             // Assert
             exception.Should().BeOfType<EmptyFullnameException>();
@@ -39,7 +39,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, null));
+                lastName), emailAddress, password, UserRole.User));
 
             // Assert
             exception.Should().BeOfType<EmptyFullnameException>();
@@ -59,7 +59,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, null));
+                lastName), emailAddress, password, UserRole.User));
 
             // Assert
             exception.Should().BeOfType<InvalidFullnameLengthException>();
@@ -79,7 +79,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, null));
+                lastName), emailAddress, password, UserRole.User));
 
             // Assert
             exception.Should().BeOfType<InvalidFullnameLengthException>();
@@ -97,11 +97,29 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, null));
+                lastName), emailAddress, password, UserRole.User));
 
             // Assert
             exception.Should().BeOfType<InvalidEmailException>();
             exception.Message.Should().Be($"The provided value {emailAddress} is not an email address");
+        }
+
+        [Fact]
+        public void NewUser_ForTooLongEmail_ShouldThrowInvalidEmailException()
+        {
+            // Arrange
+            string firstName = "John";
+            string lastName = "Doe";
+            string emailAddress = GenerateRandomText(500) + "@company.com";
+            string password = "12345Abc@";
+
+            // Act
+            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
+                lastName), emailAddress, password, UserRole.User));
+
+            // Assert
+            exception.Should().BeOfType<InvalidEmailException>();
+            exception.Message.Should().Be($"Email length must be shorter than 400");
         }
 
         [Fact]
@@ -115,7 +133,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, null));
+                lastName), emailAddress, password, UserRole.User));
 
             // Assert
             exception.Should().BeOfType<PasswordPolicyException>();
@@ -133,7 +151,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, null));
+                lastName), emailAddress, password, UserRole.User));
 
             // Assert
             exception.Should().BeOfType<PasswordPolicyException>();
@@ -155,34 +173,12 @@ namespace SimpleShopD.Domain.Tests
             string password = "JohnDoe123!";
 
             // Act
-            var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, new HashSet<Address>() { new Address(country, city, zipCode, street, buildingNumber) }));
+            var user = new User(Guid.NewGuid(), new Fullname(firstName, lastName), emailAddress, password, UserRole.User);
+            var exception = Record.Exception(() => user.AddAddress(Guid.NewGuid(), country, city, zipCode, street, buildingNumber));
 
             // Assert
             exception.Should().BeOfType(exceptionType);
             exception.Message.Should().Be(message);
-        }
-
-        [Fact]
-        public void NewUser_ForDuplicatedAddresses_ShouldContainsUniqueAddresses()
-        {
-            // Arrange
-            string firstName = "John";
-            string lastName = "Doe";
-            string emailAddress = "john.doe@ssd.com";
-            string password = "JohnDoe123!";
-            List<Address> addresses = new()
-            {
-                new Address("Poland", "Warsaw", "00-000", "Złota", "1"),
-                new Address("Poland", "Warsaw", "00-000", "Złota", "1")
-            };
-
-            // Act
-            var user = new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, new HashSet<Address>(addresses));
-
-            // Assert
-            user.Addresses.Should().Equal(addresses.Distinct());
         }
 
         [Fact]
@@ -193,18 +189,24 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "john.doe@ssd.com";
             string password = "JohnDoe123!";
-            List<Address> addresses = new()
-            {
-                new Address("Poland", "Warsaw", "00-000", "Złota", "1"),
-                new Address("Poland", "Warsaw", "00-000", "Złota", "2")
-            };
 
             // Act
             var user = new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User, new HashSet<Address>(addresses));
+                lastName), emailAddress, password, UserRole.User);
+            user.AddAddress(Guid.NewGuid(), "Poland", "Warsaw", "00-000", "Złota", "1");
+            user.AddAddress(Guid.NewGuid(), "Poland", "Warsaw", "00-000", "Złota", "2");
 
             // Assert
-            user.Addresses.Should().Equal(addresses);
+            user.Addresses.Take(1).First().Country.Should().Be("Poland");
+            user.Addresses.Take(1).First().City.Should().Be("Warsaw");
+            user.Addresses.Take(1).First().ZipCode.Should().Be("00-000");
+            user.Addresses.Take(1).First().Street.Should().Be("Złota");
+            user.Addresses.Take(1).First().BuildingNumber.Should().Be("1");
+            user.Addresses.Take(2).Skip(1).First().Country.Should().Be("Poland");
+            user.Addresses.Take(2).Skip(1).First().City.Should().Be("Warsaw");
+            user.Addresses.Take(2).Skip(1).First().ZipCode.Should().Be("00-000");
+            user.Addresses.Take(2).Skip(1).First().Street.Should().Be("Złota");
+            user.Addresses.Take(2).Skip(1).First().BuildingNumber.Should().Be("2");
             user.Fullname.Firstname.Should().Be(firstName);
             user.Fullname.Lastname.Should().Be(lastName);
             user.Email.EmailAddress.Should().Be(emailAddress);

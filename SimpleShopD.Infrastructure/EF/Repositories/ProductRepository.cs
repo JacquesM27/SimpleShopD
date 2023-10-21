@@ -10,10 +10,10 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
         private readonly DbSet<Product> _products;
         private readonly WriteDbContext _context;
 
-        public ProductRepository(DbSet<Product> products, WriteDbContext context)
+        public ProductRepository(WriteDbContext context)
         {
-            _products = products;
             _context = context;
+            _products = _context.Products;
         }
 
         public async Task<Guid> AddAsync(Product product, CancellationToken cancellationToken = default)
@@ -35,7 +35,7 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
         public async Task<bool> ExistsByTitleAsync(string name, CancellationToken cancellationToken = default)
             => await _products.AnyAsync(x => x.Title == name, cancellationToken);
 
-        public async Task<Product> GetAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Product?> GetAsync(Guid id, CancellationToken cancellationToken = default)
             => await _products.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         public async Task UpdateAsync(Product product)

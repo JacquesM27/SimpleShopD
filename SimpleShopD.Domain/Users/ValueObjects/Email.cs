@@ -12,6 +12,9 @@ namespace SimpleShopD.Domain.Users.ValueObjects
             if (!new EmailAddressAttribute().IsValid(emailAddress))
                 throw new InvalidEmailException($"The provided value {emailAddress} is not an email address");
 
+            if(emailAddress.Length > 400)
+                throw new InvalidEmailException($"Email length must be shorter than 400");
+
             EmailAddress = emailAddress;
         }
 

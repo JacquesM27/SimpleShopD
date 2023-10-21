@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "SimpleShopD\WebApi.csproj", "{533280FC-73BF-41C0-BE31-FC4898E44F24}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Domain", "SimpleShopD.Domain\SimpleShopD.Domain.csproj", "{83C29794-96FA-4C42-A932-C48D68AAE95D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Application", "SimpleShopD.Application\SimpleShopD.Application.csproj", "{0366953A-1E20-49F4-9FEA-3C946511EE20}"
@@ -21,7 +19,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Domain.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Application.Tests", "SimpleShopD.Application.Tests\SimpleShopD.Application.Tests.csproj", "{9079DF1B-E951-4CE1-A94C-1819448A8FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShopD.Infrastructure", "SimpleShopD.Infrastructure\SimpleShopD.Infrastructure.csproj", "{16810679-5580-47E9-95B9-802CFB06B41E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.Infrastructure", "SimpleShopD.Infrastructure\SimpleShopD.Infrastructure.csproj", "{16810679-5580-47E9-95B9-802CFB06B41E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleShopD.WebApi", "SimpleShopD.WebApi\SimpleShopD.WebApi.csproj", "{BD6C70BD-96BE-4585-9C2D-D1EF82CCE5B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyInfo", "MyInfo", "{9C80C82C-7437-4206-B5F1-16C771F5F7E0}"
+	ProjectSection(SolutionItems) = preProject
+		ef command.txt = ef command.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +34,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{533280FC-73BF-41C0-BE31-FC4898E44F24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83C29794-96FA-4C42-A932-C48D68AAE95D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83C29794-96FA-4C42-A932-C48D68AAE95D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83C29794-96FA-4C42-A932-C48D68AAE95D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,6 +62,10 @@ Global
 		{16810679-5580-47E9-95B9-802CFB06B41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16810679-5580-47E9-95B9-802CFB06B41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16810679-5580-47E9-95B9-802CFB06B41E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD6C70BD-96BE-4585-9C2D-D1EF82CCE5B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD6C70BD-96BE-4585-9C2D-D1EF82CCE5B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD6C70BD-96BE-4585-9C2D-D1EF82CCE5B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD6C70BD-96BE-4585-9C2D-D1EF82CCE5B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

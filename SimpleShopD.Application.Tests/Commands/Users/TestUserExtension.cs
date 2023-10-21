@@ -13,7 +13,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             string password = "JohnDoe123!";
 
             return new(Guid.NewGuid(), new Domain.Shared.ValueObjects.Fullname(firstName,
-                lastName), emailAddress, password, role, null);
+                lastName), emailAddress, password, role);
         }
     }
 }

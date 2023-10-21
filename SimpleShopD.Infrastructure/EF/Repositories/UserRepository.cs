@@ -11,10 +11,10 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
         private readonly DbSet<User> _users;
         private readonly WriteDbContext _context;
 
-        public UserRepository(DbSet<User> users, WriteDbContext context)
+        public UserRepository(WriteDbContext context)
         {
-            _users = users;
             _context = context;
+            _users = _context.Users;
         }
 
         public async Task<Guid> AddAsync(User user, CancellationToken cancellationToken = default)
@@ -27,14 +27,17 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
         public async Task<bool> DoesExist(Guid id, CancellationToken cancellationToken = default) 
             => await _users.AnyAsync(i => i.Id == id, cancellationToken);
 
-        public async Task<User> GetAsync(Guid id, CancellationToken cancellationToken = default) 
+        public async Task<User?> GetAsync(Guid id, CancellationToken cancellationToken = default) 
             => await _users.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
             => await _users.SingleOrDefaultAsync(x => x.Email == email, cancellationToken);
 
-        public async Task<bool> IsAdminAsync(Guid id, CancellationToken cancellationToken = default) 
-            => (await _users.SingleOrDefaultAsync(x => x.Id == id, cancellationToken)).RoleOfUser == UserRole.Admin;
+        public async Task<bool> IsAdminAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var user = await _users.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return user != null && user.RoleOfUser == UserRole.Admin;
+        }
 
         public async Task<bool> IsTheEmailUniqueAsync(string email, CancellationToken cancellationToken = default)
             => await _users.AnyAsync(i => i.Email == email, cancellationToken);

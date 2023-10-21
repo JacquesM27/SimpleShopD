@@ -11,6 +11,9 @@ namespace SimpleShopD.Domain.Products.ValueObjects
             if (string.IsNullOrWhiteSpace(value))
                 throw new EmptyDescriptionException("Description cannot be empty.");
 
+            if (value.Length > 2000)
+                throw new InvalidDescriptionException("Description length must be shorter than 2000");
+
             Value = value;
         }
 
