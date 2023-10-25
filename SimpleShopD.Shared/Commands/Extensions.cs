@@ -16,6 +16,12 @@ namespace SimpleShopD.Shared.Commands
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
+            services.AddSingleton<ICommandTResultDispatcher, InMemoryCommandTResultDispatcher>();
+            services.Scan(x => x.FromAssemblies(assembly)
+                .AddClasses(y => y.AssignableTo(typeof(ICommandTResultHandler<,>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
+
             return services;
         }
     }

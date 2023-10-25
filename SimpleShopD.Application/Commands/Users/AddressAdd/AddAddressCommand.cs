@@ -4,7 +4,7 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.AddressAdd
 {
-    internal sealed class AddAddressCommand : ICommandTValueHandler<AddAddress, Guid>
+    internal sealed class AddAddressCommand : ICommandTResultHandler<AddAddress, Guid>
     {
         private readonly IUserRepository _userRepository;
 

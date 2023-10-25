@@ -6,7 +6,7 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.Login
 {
-    internal sealed class LoginUserCommand : ICommandTValueHandler<LoginUser, LoginToken>
+    internal sealed class LoginUserCommand : ICommandTResultHandler<LoginUser, LoginToken>
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenProvider _tokenProvider;

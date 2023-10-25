@@ -5,7 +5,7 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Products.Add
 {
-    internal sealed class AddProductHandler : ICommandTValueHandler<AddProduct, Guid>
+    internal sealed class AddProductHandler : ICommandTResultHandler<AddProduct, Guid>
     {
         private readonly IProductRepository _productRepository;
 

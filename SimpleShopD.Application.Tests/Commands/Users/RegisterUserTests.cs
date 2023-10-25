@@ -14,7 +14,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
 {
     public class RegisterUserTests
     {
-        private readonly ICommandTValueHandler<RegisterUser, Guid> _commandHandler;
+        private readonly ICommandTResultHandler<RegisterUser, Guid> _commandHandler;
         private readonly IUserRepository _userRepository;
 
         public RegisterUserTests()

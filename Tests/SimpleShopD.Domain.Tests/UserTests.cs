@@ -197,16 +197,16 @@ namespace SimpleShopD.Domain.Tests
             user.AddAddress(Guid.NewGuid(), "Poland", "Warsaw", "00-000", "Złota", "2");
 
             // Assert
-            user.Addresses.Take(1).First().Country.Should().Be("Poland");
-            user.Addresses.Take(1).First().City.Should().Be("Warsaw");
-            user.Addresses.Take(1).First().ZipCode.Should().Be("00-000");
-            user.Addresses.Take(1).First().Street.Should().Be("Złota");
-            user.Addresses.Take(1).First().BuildingNumber.Should().Be("1");
-            user.Addresses.Take(2).Skip(1).First().Country.Should().Be("Poland");
-            user.Addresses.Take(2).Skip(1).First().City.Should().Be("Warsaw");
-            user.Addresses.Take(2).Skip(1).First().ZipCode.Should().Be("00-000");
-            user.Addresses.Take(2).Skip(1).First().Street.Should().Be("Złota");
-            user.Addresses.Take(2).Skip(1).First().BuildingNumber.Should().Be("2");
+            user.Addresses.Take(1).First().Country.Value.Should().Be("Poland");
+            user.Addresses.Take(1).First().City.Value.Should().Be("Warsaw");
+            user.Addresses.Take(1).First().ZipCode.Value.Should().Be("00-000");
+            user.Addresses.Take(1).First().Street.Value.Should().Be("Złota");
+            user.Addresses.Take(1).First().BuildingNumber.Value.Should().Be("1");
+            user.Addresses.Take(2).Skip(1).First().Country.Value.Should().Be("Poland");
+            user.Addresses.Take(2).Skip(1).First().City.Value.Should().Be("Warsaw");
+            user.Addresses.Take(2).Skip(1).First().ZipCode.Value.Should().Be("00-000");
+            user.Addresses.Take(2).Skip(1).First().Street.Value.Should().Be("Złota");
+            user.Addresses.Take(2).Skip(1).First().BuildingNumber.Value.Should().Be("2");
             user.Fullname.Firstname.Should().Be(firstName);
             user.Fullname.Lastname.Should().Be(lastName);
             user.Email.EmailAddress.Should().Be(emailAddress);

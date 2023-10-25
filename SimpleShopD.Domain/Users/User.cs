@@ -75,7 +75,7 @@ namespace SimpleShopD.Domain.Users
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
             RefreshToken = TokenType.Refresh;
-            return tokenProvider.Provide(RefreshToken.ExpirationDate, RoleOfUser.UserRole, Id);
+            return tokenProvider.Provide(RefreshToken.ExpirationDate, RoleOfUser.UserRole, Id, Email);
         }
 
         public void ChangeRole(UserRole userRole)

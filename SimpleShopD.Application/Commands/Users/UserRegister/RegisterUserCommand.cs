@@ -9,7 +9,7 @@ using DomainVo = SimpleShopD.Domain.Shared.ValueObjects;
 
 namespace SimpleShopD.Application.Commands.Users.UserRegister
 {
-    internal sealed class RegisterUserCommand : ICommandTValueHandler<RegisterUser, Guid>
+    internal sealed class RegisterUserCommand : ICommandTResultHandler<RegisterUser, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly IEnumerable<ICreateUserPolicy> _createUserPolicies;

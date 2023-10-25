@@ -2,9 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Users;
 using SimpleShopD.Infrastructure.EF.Contexts;
 using SimpleShopD.Infrastructure.EF.Repositories;
+using SimpleShopD.Infrastructure.Logging;
+using SimpleShopD.Infrastructure.Services;
+using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Infrastructure
 {
@@ -16,6 +20,11 @@ namespace SimpleShopD.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddTransient<ITokenProvider, TokenProvider>();
+
+            services.TryDecorate(typeof(ICommandHandler<>), typeof(CommandHandlerLoggerDecorator<>));
+            services.TryDecorate(typeof(ICommandTResultHandler<,>), typeof(CommandTValueHandlerLoggerDecorator<,>));
+
             return services;
         }
 

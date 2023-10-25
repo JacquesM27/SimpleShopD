@@ -9,6 +9,7 @@
   <ItemGroup>
 	<InternalsVisibleTo Include="SimpleShopD.Application.Tests" />
     <ProjectReference Include="..\SimpleShopD.Domain\SimpleShopD.Domain.csproj" />
+    <ProjectReference Include="..\SimpleShopD.Shared\SimpleShopD.Shared.csproj" />
   </ItemGroup>
 
 </Project>
