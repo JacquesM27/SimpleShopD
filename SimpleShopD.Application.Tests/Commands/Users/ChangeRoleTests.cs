@@ -4,7 +4,6 @@ using SimpleShopD.Application.Commands.Users.RoleChange;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Repositories;
-using SimpleShopD.Domain.Users;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Tests.Commands.Users

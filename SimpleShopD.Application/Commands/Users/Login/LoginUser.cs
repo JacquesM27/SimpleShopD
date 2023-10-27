@@ -3,5 +3,5 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.Login
 {
-    public sealed record LoginUser(string Email, string Password) : ICommandTResult<LoginToken>;
+    public sealed record LoginUser(string Email, string Password) : ICommandTResult<AuthToken>;
 }

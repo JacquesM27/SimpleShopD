@@ -46,6 +46,7 @@ namespace SimpleShopD.Domain.Users
             if (resetPasswordToken != ResetPasswordToken.Value)
                 throw new SettingNewPasswordException("Invalid reset password token");
             Password = new Password(newPassword);
+            ResetPasswordToken = null;
         }
 
         public void ChangePassword(string oldPassword, string newPassword)
@@ -55,8 +56,11 @@ namespace SimpleShopD.Domain.Users
             Password = newPassword;
         }
 
-        public void GenerateRefreshToken()
-            => RefreshToken = TokenType.Refresh;
+        public AuthToken GenerateRefreshToken()
+        {
+            RefreshToken = TokenType.Refresh;
+            return new AuthToken(RefreshToken.Value, RefreshToken.ExpirationDate, null);
+        }
 
         public void Activate(string activationToken)
         {
@@ -68,14 +72,15 @@ namespace SimpleShopD.Domain.Users
             ActivationToken = null;
         }
 
-        public LoginToken Login(string password, ITokenProvider tokenProvider)
+        public AuthToken Login(string password, ITokenProvider tokenProvider)
         {
             if (Status == AccountStatus.Inactive)
                 throw new LoginOperationException("Account is not active");
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
             RefreshToken = TokenType.Refresh;
-            return tokenProvider.Provide(RefreshToken.ExpirationDate, RoleOfUser.UserRole, Id, Email);
+            string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), RoleOfUser.UserRole, Id, Email);
+            return new AuthToken(RefreshToken.Value, RefreshToken.ExpirationDate, jwt);
         }
 
         public void ChangeRole(UserRole userRole)

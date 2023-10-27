@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Services;
-using SimpleShopD.Domain.Services.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -15,7 +14,7 @@ namespace SimpleShopD.Infrastructure.Services
         public TokenProvider(IConfiguration configuration) 
             => _configuration = configuration;
 
-        public LoginToken Provide(DateTime expirationDate, UserRole role, Guid userId, string email)
+        public string Provide(DateTime expirationDate, UserRole role, Guid userId, string email)
         {
             List<Claim> claims = new()
             {
@@ -33,7 +32,7 @@ namespace SimpleShopD.Infrastructure.Services
                 signingCredentials: creds
                 );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return new LoginToken(jwt, expirationDate);
+            return jwt;
         }
     }
 }

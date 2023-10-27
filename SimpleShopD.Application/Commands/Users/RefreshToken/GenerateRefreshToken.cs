@@ -1,6 +1,7 @@
-﻿using SimpleShopD.Shared.Abstractions.Commands;
+﻿using SimpleShopD.Domain.Services.DTO;
+using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.RefreshToken
 {
-    public sealed record GenerateRefreshToken(Guid UserId) : ICommand;
+    public sealed record GenerateRefreshToken(Guid UserId) : ICommandTResult<AuthToken>;
 }
