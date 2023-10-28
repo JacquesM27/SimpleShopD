@@ -1,4 +1,4 @@
-﻿using SimpleShopD.Application.Commands.SharedDto;
+﻿using SimpleShopD.Application.Dto;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Orders.AddOrderLine

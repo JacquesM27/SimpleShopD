@@ -10,5 +10,6 @@ namespace SimpleShopD.Domain.Repositories
         Task DeleteAsync(Product product, CancellationToken cancellationToken = default);
         Task<bool> DoesExist(Guid id, CancellationToken cancellationToken = default);
         Task UpdateAsync(Product product);
+        Task<IList<Product>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
     }
 }

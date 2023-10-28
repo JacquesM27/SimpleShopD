@@ -56,6 +56,8 @@ namespace SimpleShopD.Domain.Users
             Password = newPassword;
         }
 
+        // TODO: this method should not return any data, but append the refresh token into the cookie through the context accessor
+        // TODO: also lack expiration validation
         public AuthToken GenerateRefreshToken()
         {
             RefreshToken = TokenType.Refresh;
@@ -72,6 +74,7 @@ namespace SimpleShopD.Domain.Users
             ActivationToken = null;
         }
 
+        // TODO: this method should return only the jwt token and append the refresh token into the cookie through the context accessor
         public AuthToken Login(string password, ITokenProvider tokenProvider)
         {
             if (Status == AccountStatus.Inactive)

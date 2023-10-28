@@ -1,5 +1,4 @@
-﻿using SimpleShopD.Application.Commands.SharedDto;
-using SimpleShopD.Application.Exceptions;
+﻿using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Orders;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Domain.Shared.ValueObjects;
@@ -22,7 +21,7 @@ namespace SimpleShopD.Application.Commands.Orders.Add
 
         public async Task<Guid> HandleAsync(AddOrder command)
         {
-           if(!await _userRepository.DoesExist(command.UserId))
+           if(!await _userRepository.DoesExistAsync(command.UserId))
                 throw new UserDoesNotExistException(command.UserId.ToString());
 
             var fullname = MapFullname(command);

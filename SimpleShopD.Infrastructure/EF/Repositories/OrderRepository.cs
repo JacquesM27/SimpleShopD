@@ -32,7 +32,10 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
         public async Task UpdateAsync(Order order, CancellationToken cancellationToken = default)
         {
             _orders.Update(order);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<IEnumerable<Order>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default) 
+            => await _orders.Where(x => x.UserId == userId).ToListAsync(cancellationToken: cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SimpleShopD.Application.Commands.SharedDto
+﻿namespace SimpleShopD.Application.Dto
 {
     public sealed record OrderLine(Guid ProductId, decimal Quantity, decimal Price);
 }

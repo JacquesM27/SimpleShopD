@@ -1,4 +1,5 @@
-﻿using SimpleShopD.Domain.Users;
+﻿using SimpleShopD.Domain.Addresses;
+using SimpleShopD.Domain.Users;
 
 namespace SimpleShopD.Domain.Repositories
 {
@@ -10,6 +11,7 @@ namespace SimpleShopD.Domain.Repositories
         Task<bool> IsTheEmailUniqueAsync(string email, CancellationToken cancellation = default);
         Task UpdateAsync(User user, CancellationToken cancellation = default);
         Task<bool> IsAdminAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<bool> DoesExist(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> DoesExistAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Address?> GetAddressAsync(Guid userId, Guid addressId, CancellationToken cancellationToken = default);
     }
 }

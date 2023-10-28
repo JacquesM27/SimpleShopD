@@ -8,5 +8,6 @@ namespace SimpleShopD.Domain.Repositories
         Task<Guid> AddAsync(Order order, CancellationToken cancellationToken = default);
         Task UpdateAsync(Order order, CancellationToken cancellationToken = default);
         Task<bool> ProductExistsOnSomeOrder(Guid ProductId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Order>> GetByUserAsync(Guid userId,  CancellationToken cancellationToken = default);
     }
 }

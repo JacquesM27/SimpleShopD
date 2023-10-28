@@ -120,6 +120,9 @@ namespace SimpleShopD.Domain.Orders
             RemoveLine(orderLine);
         }
 
+        public decimal GetTotal() 
+            => TotalPrice;
+
         private void RemoveLine(OrderLine orderLine)
         {
             if (CurrentStatus.Value is not OrderStatus.NotPaid)

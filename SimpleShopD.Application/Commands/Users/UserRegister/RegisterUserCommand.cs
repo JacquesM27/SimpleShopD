@@ -1,8 +1,6 @@
-﻿using SimpleShopD.Application.Commands.SharedDto;
-using SimpleShopD.Application.Exceptions;
+﻿using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Policies;
 using SimpleShopD.Domain.Repositories;
-using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Domain.Users;
 using SimpleShopD.Shared.Abstractions.Commands;
 using DomainVo = SimpleShopD.Domain.Shared.ValueObjects;

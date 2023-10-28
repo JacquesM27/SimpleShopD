@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SimpleShopD.Domain.Addresses;
 using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Domain.Users;
@@ -24,7 +25,7 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
             return user.Id;
         }
 
-        public async Task<bool> DoesExist(Guid id, CancellationToken cancellationToken = default) 
+        public async Task<bool> DoesExistAsync(Guid id, CancellationToken cancellationToken = default) 
             => await _users.AnyAsync(i => i.Id == id, cancellationToken);
 
         public async Task<User?> GetAsync(Guid id, CancellationToken cancellationToken = default) 
@@ -47,5 +48,12 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
             _users.Update(user);
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<Address?> GetAddressAsync(Guid userId, Guid addressId, CancellationToken cancellationToken = default) 
+            => await _users
+                .Where(x => x.Id == userId)
+                .SelectMany(c => c.Addresses)
+                .Where(x => x.Id == addressId)
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 }
