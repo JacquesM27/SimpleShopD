@@ -8,7 +8,7 @@ using SimpleShopD.WebApi;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("C:\\testSerilog\\log.txt", rollingInterval: RollingInterval.Day, shared: true)
+                .WriteTo.File("/app/log/log.txt", rollingInterval: RollingInterval.Day, shared: true)
                 .CreateLogger();
 builder.Logging.AddSerilog();
 
@@ -29,11 +29,11 @@ builder.ConfigureAuthentication();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 

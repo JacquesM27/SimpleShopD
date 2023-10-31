@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqlserver
+    environment:
+     - ACCEPT_EULA=Y
+     - SA_PASSWORD=Docker2137!
+    ports:
+     - "1435:1433" 
+
+  simpleshopd.webapi:
+    image: ${DOCKER_REGISTRY-}simpleshopdwebapi
+    build:
+      context: .
+      dockerfile: SimpleShopD.WebApi/Dockerfile
+    ports:
+      - "50080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - ./log:/app/log
+    depends_on:
+      - sqlserver

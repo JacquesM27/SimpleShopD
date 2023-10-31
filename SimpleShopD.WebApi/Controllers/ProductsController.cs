@@ -4,6 +4,7 @@ using SimpleShopD.Application.Commands.Products.Add;
 using SimpleShopD.Application.Commands.Products.Delete;
 using SimpleShopD.Application.Commands.Products.Update;
 using SimpleShopD.Application.Queries.Products.Get;
+using SimpleShopD.Application.Queries.Products.GetAll;
 using SimpleShopD.Shared.Abstractions.Commands;
 using SimpleShopD.Shared.Abstractions.Queries;
 
@@ -28,6 +29,13 @@ namespace SimpleShopD.WebApi.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Get(GetProduct command)
+        {
+            var result = await _queryDispatcher.QueryAsync(command);
+            return Ok(result);
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllProducts(GetAllProducts command)
         {
             var result = await _queryDispatcher.QueryAsync(command);
             return Ok(result);

@@ -46,5 +46,8 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
 
         public async Task<IList<Product>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default) 
             => await _products.Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken: cancellationToken);
+
+        public async Task<IList<Product>> GetAllAsync(CancellationToken cancellationToken = default)
+            => await _products.ToListAsync(cancellationToken: cancellationToken);
     }
 }

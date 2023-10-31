@@ -1,0 +1,25 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["SimpleShopD.WebApi/SimpleShopD.WebApi.csproj", "SimpleShopD.WebApi/"]
+COPY ["SimpleShopD.Application/SimpleShopD.Application.csproj", "SimpleShopD.Application/"]
+COPY ["SimpleShopD.Domain/SimpleShopD.Domain.csproj", "SimpleShopD.Domain/"]
+COPY ["SimpleShopD.Shared.Abstractions/SimpleShopD.Shared.Abstractions.csproj", "SimpleShopD.Shared.Abstractions/"]
+COPY ["SimpleShopD.Shared/SimpleShopD.Shared.csproj", "SimpleShopD.Shared/"]
+COPY ["SimpleShopD.Infrastructure/SimpleShopD.Infrastructure.csproj", "SimpleShopD.Infrastructure/"]
+RUN dotnet restore "SimpleShopD.WebApi/SimpleShopD.WebApi.csproj"
+COPY . .
+WORKDIR "/src/SimpleShopD.WebApi"
+RUN dotnet build "SimpleShopD.WebApi.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "SimpleShopD.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "SimpleShopD.WebApi.dll"]
