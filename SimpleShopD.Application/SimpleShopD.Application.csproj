@@ -12,8 +12,5 @@
     <ProjectReference Include="..\SimpleShopD.Shared\SimpleShopD.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Queries\Products\Get\" />
-  </ItemGroup>
 
 </Project>
