@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Services;
+using SimpleShopD.Domain.Users.ValueObjects;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -14,12 +14,12 @@ namespace SimpleShopD.Infrastructure.Services
         public TokenProvider(IConfiguration configuration) 
             => _configuration = configuration;
 
-        public string Provide(DateTime expirationDate, UserRole role, Guid userId, string email)
+        public string Provide(DateTime expirationDate, Role role, Guid userId, string email)
         {
             List<Claim> claims = new()
             {
                 new(ClaimTypes.NameIdentifier, userId.ToString()),
-                new(ClaimTypes.Role, role.ToString()),
+                new(ClaimTypes.Role, role),
                 new(ClaimTypes.Email, email)
             };
 

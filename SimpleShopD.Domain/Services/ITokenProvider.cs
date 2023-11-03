@@ -1,9 +1,9 @@
-﻿using SimpleShopD.Domain.Enum;
+﻿using SimpleShopD.Domain.Users.ValueObjects;
 
 namespace SimpleShopD.Domain.Services
 {
     public interface ITokenProvider
     {
-        string Provide(DateTime expirationDate, UserRole role, Guid userId, string email);
+        string Provide(DateTime expirationDate, Role role, Guid userId, string email);
     }
 }

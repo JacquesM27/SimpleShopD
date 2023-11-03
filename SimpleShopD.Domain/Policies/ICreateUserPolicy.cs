@@ -1,11 +1,11 @@
-﻿using SimpleShopD.Domain.Enum;
-using SimpleShopD.Domain.Users;
+﻿using SimpleShopD.Domain.Users;
+using SimpleShopD.Domain.Users.ValueObjects;
 
 namespace SimpleShopD.Domain.Policies
 {
     public interface ICreateUserPolicy
     {
-        bool CanBeApplied(UserRole userRole);
+        bool CanBeApplied(Role userRole);
         bool CanCreate(User? user);
     }
 }

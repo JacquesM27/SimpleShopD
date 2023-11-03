@@ -5,6 +5,7 @@ using SimpleShopD.Application.Commands.Products.Delete;
 using SimpleShopD.Application.Commands.Products.Update;
 using SimpleShopD.Application.Queries.Products.Get;
 using SimpleShopD.Application.Queries.Products.GetAll;
+using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 using SimpleShopD.Shared.Abstractions.Queries;
 
@@ -12,7 +13,6 @@ namespace SimpleShopD.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
@@ -41,6 +41,7 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpPost("add")]
         public async Task<IActionResult> Add(AddProduct command)
         {
@@ -48,6 +49,7 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete(DeleteProduct command)
         {
@@ -55,6 +57,7 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpPatch("update")]
         public async Task<IActionResult> Update(UpdateProduct command)
         {

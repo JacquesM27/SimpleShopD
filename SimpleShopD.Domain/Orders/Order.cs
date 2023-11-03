@@ -13,7 +13,7 @@ namespace SimpleShopD.Domain.Orders
         public Guid UserId { get; private set; }
         public Guid AddressId { get; private set; }
         public Fullname ReceiverFullname { get; private set; }
-        public StatusOfOrder CurrentStatus { get; private set; }
+        public Status Status { get; private set; }
         public IList<OrderLine> OrderLines { get; private set; }
 
         private decimal TotalPrice { get => OrderLines.Sum(x => x.Price); }
@@ -26,7 +26,7 @@ namespace SimpleShopD.Domain.Orders
             LastModifiedDate = DateTime.UtcNow;
             AddressId = addressId;
             ReceiverFullname = receiverFullname;
-            CurrentStatus = OrderStatus.NotPaid;
+            Status = OrderStatus.NotPaid;
             OrderLines = new List<OrderLine>();
         }
 
@@ -34,63 +34,63 @@ namespace SimpleShopD.Domain.Orders
 
         public void PayOrder(decimal amount)
         {
-            if (CurrentStatus.Value is not OrderStatus.NotPaid)
+            if (Status.Value is not OrderStatus.NotPaid)
                 throw new PayOrderException("Order is already paid.");
             if (amount != TotalPrice)
                 throw new PayOrderException("Invalid amount.");
-            CurrentStatus = OrderStatus.Paid;
+            Status = OrderStatus.Paid;
             LastModifiedDate = DateTime.UtcNow;
         }
 
         public void ChangeDeliveryAddress(Guid addressId)
         {
-            if (CurrentStatus.Value is not OrderStatus.NotPaid or not OrderStatus.Paid)
+            if (Status.Value is not OrderStatus.NotPaid or not OrderStatus.Paid)
                 throw new ChangeAddressException("Order is pending od completed. Cannot change delivery address.");
             AddressId = addressId;
         }
 
         public void ChangeReceiverFullname(Fullname receiverFullname)
         {
-            if (CurrentStatus.Value is not OrderStatus.NotPaid or not OrderStatus.Paid)
+            if (Status.Value is not OrderStatus.NotPaid or not OrderStatus.Paid)
                 throw new ChangeReceiverOfOrderException("Order is pending or completed. Cannot chage order receiver");
             ReceiverFullname = receiverFullname;
         }
 
         public void MoveToPending()
         {
-            if (CurrentStatus.Value is OrderStatus.NotPaid)
+            if (Status.Value is OrderStatus.NotPaid)
                 throw new ChangeStatusOfOrderException("Order is not paid.");
-            else if (CurrentStatus.Value is not OrderStatus.Paid)
+            else if (Status.Value is not OrderStatus.Paid)
                 throw new ChangeStatusOfOrderException("Invalid order status.");
 
-            CurrentStatus = OrderStatus.Pending;
+            Status = OrderStatus.Pending;
             LastModifiedDate = DateTime.UtcNow;
         }
 
         public void MoveToComplete()
         {
-            if (CurrentStatus.Value is not OrderStatus.Pending)
+            if (Status.Value is not OrderStatus.Pending)
                 throw new ChangeStatusOfOrderException("Order is not pending.");
 
-            CurrentStatus = OrderStatus.Completed;
+            Status = OrderStatus.Completed;
             LastModifiedDate = DateTime.UtcNow;
         }
 
         public void ReturnOrder()
         {
-            if (CurrentStatus.Value is not OrderStatus.Completed)
-                throw new ChangeStatusOfOrderException($"Cannot return order with status {CurrentStatus.Value}.");
+            if (Status.Value is not OrderStatus.Completed)
+                throw new ChangeStatusOfOrderException($"Cannot return order with status {Status.Value}.");
 
-            CurrentStatus = OrderStatus.Returned;
+            Status = OrderStatus.Returned;
             LastModifiedDate = DateTime.UtcNow;
         }
 
         public void CancelOrder()
         {
-            if (CurrentStatus.Value is not OrderStatus.NotPaid and not OrderStatus.Paid)
-                throw new ChangeStatusOfOrderException($"Cannot cancel order with status {CurrentStatus.Value}.");
+            if (Status.Value is not OrderStatus.NotPaid and not OrderStatus.Paid)
+                throw new ChangeStatusOfOrderException($"Cannot cancel order with status {Status.Value}.");
 
-            CurrentStatus = OrderStatus.Cancelled;
+            Status = OrderStatus.Cancelled;
             LastModifiedDate = DateTime.UtcNow;
         }
 
@@ -125,8 +125,8 @@ namespace SimpleShopD.Domain.Orders
 
         private void RemoveLine(OrderLine orderLine)
         {
-            if (CurrentStatus.Value is not OrderStatus.NotPaid)
-                throw new RemoveLineException($"Cannot remove line when status is {CurrentStatus.Value}.");
+            if (Status.Value is not OrderStatus.NotPaid)
+                throw new RemoveLineException($"Cannot remove line when status is {Status.Value}.");
 
             int orderLineIndex = OrderLines.IndexOf(orderLine);
             if (orderLineIndex == -1)

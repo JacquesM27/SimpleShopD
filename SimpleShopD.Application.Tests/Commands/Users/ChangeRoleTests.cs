@@ -2,8 +2,8 @@
 using NSubstitute;
 using SimpleShopD.Application.Commands.Users.RoleChange;
 using SimpleShopD.Application.Exceptions;
-using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
@@ -26,7 +26,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         {
             // Arrange
             Guid userId = Guid.NewGuid();
-            var command = new ChangeRole(userId, UserRole.User);
+            var command = new ChangeRole(userId, Role.User);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
@@ -41,8 +41,8 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         {
             // Arrange
             Guid userId = Guid.NewGuid();
-            var command = new ChangeRole(userId, UserRole.User);
-            _userRepository.GetAsync(userId).Returns(TestUserExtension.CreateValidUser(UserRole.User));
+            var command = new ChangeRole(userId, Role.User);
+            _userRepository.GetAsync(userId).Returns(TestUserExtension.CreateValidUser(Role.User));
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));

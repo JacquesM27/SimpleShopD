@@ -29,9 +29,9 @@ namespace SimpleShopD.Application.Commands.Orders.Add
             var order = new Order(Guid.NewGuid(), command.UserId, command.OrderAddress, fullname);
             command.OrderLines.ToList().ForEach(async x =>
             {
-                if (!await _productRepository.DoesExist(x.ProductId))
+                var price = await _productRepository.GetPrice(x.ProductId) ??
                         throw new ProductDoesNotExistException(x.ProductId.ToString());
-                order.AddOrderLine(Guid.NewGuid(), x.ProductId, x.Quantity, x.Price);
+                order.AddOrderLine(Guid.NewGuid(), x.ProductId, x.Quantity, price);
             });
 
             var id = await _orderRepository.AddAsync(order);

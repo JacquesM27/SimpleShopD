@@ -4,9 +4,9 @@ using NSubstitute;
 using SimpleShopD.Application.Commands.Users.UserRegister;
 using SimpleShopD.Application.Dto;
 using SimpleShopD.Application.Exceptions;
-using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Policies;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
@@ -33,7 +33,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         {
             // Arrange
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!", 
-                UserRole.User, new List<AddressDto>(), "User", null);
+                Role.User, new List<AddressDto>(), "User", null);
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
 
             // Act
@@ -50,9 +50,9 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             Guid authorId = Guid.NewGuid();
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
-                UserRole.Admin, new List<AddressDto>(), "User", authorId);
+                Role.Admin, new List<AddressDto>(), "User", authorId);
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
-            _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(UserRole.Admin));
+            _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(Role.Admin));
 
             // Act
             var userId = await Act(command);
@@ -67,9 +67,9 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             Guid authorId = Guid.NewGuid();
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
-                UserRole.Admin, new List<AddressDto>(), "User", authorId);
+                Role.Admin, new List<AddressDto>(), "User", authorId);
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
-            _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(UserRole.User));
+            _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(Role.User));
 
             // Act
             var exception = await Record.ExceptionAsync(async () => await Act(command));
@@ -84,7 +84,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         {
             // Arrange
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
-                UserRole.Admin, new List<AddressDto>(), "User", null);
+                Role.Admin, new List<AddressDto>(), "User", null);
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
 
             // Act

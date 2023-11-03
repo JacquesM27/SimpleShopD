@@ -2,8 +2,8 @@
 using NSubstitute;
 using SimpleShopD.Application.Commands.Users.ResetPasswordToken;
 using SimpleShopD.Application.Exceptions;
-using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
@@ -42,7 +42,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             Guid userId = Guid.NewGuid();
             var command = new GeneratePasswordResetToken(userId);
-            _userRepository.GetAsync(userId).Returns(TestUserExtension.CreateValidUser(UserRole.User));
+            _userRepository.GetAsync(userId).Returns(TestUserExtension.CreateValidUser(Role.User));
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));

@@ -12,8 +12,8 @@ using SimpleShopD.Infrastructure.EF.Contexts;
 namespace SimpleShopD.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20231021165619_Inital")]
-    partial class Inital
+    [Migration("20231103221113_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,11 +79,11 @@ namespace SimpleShopD.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CurrentStatus")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -92,7 +92,7 @@ namespace SimpleShopD.Infrastructure.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("CurrentStatus");
+                    b.HasIndex("Status");
 
                     b.HasIndex("UserId");
 
@@ -167,11 +167,12 @@ namespace SimpleShopD.Infrastructure.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
 
-                    b.Property<int>("RoleOfUser")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

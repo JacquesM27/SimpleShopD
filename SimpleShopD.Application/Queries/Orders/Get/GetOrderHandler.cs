@@ -27,7 +27,7 @@ namespace SimpleShopD.Application.Queries.Orders.Get
                 await MapAddress(order.UserId, order.AddressId),
                 order.ReceiverFullname.Firstname,
                 order.ReceiverFullname.Lastname,
-                order.CurrentStatus.Value.ToString(),
+                order.Status.Value.ToString(),
                 await MapLines(order.OrderLines));
         }
 

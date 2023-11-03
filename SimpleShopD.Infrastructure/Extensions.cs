@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Users;
+using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Infrastructure.EF.Contexts;
 using SimpleShopD.Infrastructure.EF.Repositories;
 using SimpleShopD.Infrastructure.Logging;
@@ -37,7 +38,7 @@ namespace SimpleShopD.Infrastructure
 
             services.AddDbContext<WriteDbContext>(x => x.UseSqlServer(options.ConnectionString));
 
-            using (var scope =  services.BuildServiceProvider().CreateScope())
+            using (var scope = services.BuildServiceProvider().CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetService<WriteDbContext>();
                 dbContext!.Database.Migrate();
@@ -52,7 +53,7 @@ namespace SimpleShopD.Infrastructure
             if (dbContext.Users.Any())
                 return;
 
-            var defaultAdmin = new User(Guid.NewGuid(), new("Jacob", "Admin"), "admin@simpleshop.com", new("12345Abc!"), new(Domain.Enum.UserRole.Admin));
+            var defaultAdmin = new User(Guid.NewGuid(), new("Jacob", "Admin"), "admin@simpleshop.com", new("12345Abc!"), Role.Admin);
             defaultAdmin.Activate(defaultAdmin.ActivationToken!.Value);
 
             dbContext.Users.Add(defaultAdmin);

@@ -14,7 +14,7 @@ namespace SimpleShopD.Application.Queries.Orders.BasicUserOrders
 
         public async Task<IEnumerable<OrderBasicDto>> HandleAsync(GetBasicUserOrders query) 
             => (await _orderRepository.GetByUserAsync(query.UserId))
-            .Select(x => new OrderBasicDto(x.Id, x.CreationDate, x.CurrentStatus.Value.ToString(), x.GetTotal()));
+            .Select(x => new OrderBasicDto(x.Id, x.CreationDate, x.Status.Value.ToString(), x.GetTotal()));
 
     }
 }

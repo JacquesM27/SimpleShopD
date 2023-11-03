@@ -5,6 +5,7 @@ using SimpleShopD.Domain.Shared.Exceptions;
 using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Domain.Users;
 using SimpleShopD.Domain.Users.Exceptions;
+using SimpleShopD.Domain.Users.ValueObjects;
 
 namespace SimpleShopD.Domain.Tests
 {
@@ -21,7 +22,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<EmptyFullnameException>();
@@ -39,7 +40,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<EmptyFullnameException>();
@@ -59,7 +60,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<InvalidFullnameLengthException>();
@@ -79,7 +80,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<InvalidFullnameLengthException>();
@@ -97,7 +98,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<InvalidEmailException>();
@@ -115,7 +116,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<InvalidEmailException>();
@@ -133,7 +134,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<PasswordPolicyException>();
@@ -151,7 +152,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User));
+                lastName), emailAddress, password, Role.User));
 
             // Assert
             exception.Should().BeOfType<PasswordPolicyException>();
@@ -173,7 +174,7 @@ namespace SimpleShopD.Domain.Tests
             string password = "JohnDoe123!";
 
             // Act
-            var user = new User(Guid.NewGuid(), new Fullname(firstName, lastName), emailAddress, password, UserRole.User);
+            var user = new User(Guid.NewGuid(), new Fullname(firstName, lastName), emailAddress, password, Role.User);
             var exception = Record.Exception(() => user.AddAddress(Guid.NewGuid(), country, city, zipCode, street, buildingNumber));
 
             // Assert
@@ -192,7 +193,7 @@ namespace SimpleShopD.Domain.Tests
 
             // Act
             var user = new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, UserRole.User);
+                lastName), emailAddress, password, Role.User);
             user.AddAddress(Guid.NewGuid(), "Poland", "Warsaw", "00-000", "Złota", "1");
             user.AddAddress(Guid.NewGuid(), "Poland", "Warsaw", "00-000", "Złota", "2");
 
@@ -212,7 +213,7 @@ namespace SimpleShopD.Domain.Tests
             user.Email.EmailAddress.Should().Be(emailAddress);
             user.Password.VerifyPassword(password).Should().BeTrue();
             user.Status.Value.Should().Be(AccountStatus.Inactive);
-            user.RoleOfUser.UserRole.Should().Be(UserRole.User);
+            user.UserRole.Value.Should().Be(Role.User);
             user.ActivationToken!.Value.Should().NotBeNull();
             user.ResetPasswordToken.Should().BeNull();
             user.RefreshToken.Should().BeNull();

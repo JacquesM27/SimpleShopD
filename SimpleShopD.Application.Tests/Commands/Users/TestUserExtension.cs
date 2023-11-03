@@ -1,11 +1,11 @@
-﻿using SimpleShopD.Domain.Enum;
-using SimpleShopD.Domain.Users;
+﻿using SimpleShopD.Domain.Users;
+using SimpleShopD.Domain.Users.ValueObjects;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
 {
     internal static class TestUserExtension
     {
-        public static User CreateValidUser(UserRole role)
+        public static User CreateValidUser(Role role)
         {
             string firstName = "John";
             string lastName = "Doe";

@@ -1,4 +1,5 @@
 ﻿using SimpleShopD.Domain.Enum;
+using SimpleShopD.Domain.Users.ValueObjects;
 
 namespace SimpleShopD.Infrastructure.EF.Models
 {
@@ -11,7 +12,7 @@ namespace SimpleShopD.Infrastructure.EF.Models
         public byte[] Hash { get; set; }
         public byte[] Salt { get; set; }
         public AccountStatus StatusOfAccount { get; set; }
-        public UserRole RoleOfUser { get; set; }
+        public Role RoleOfUser { get; set; }
         public HashSet<AddressReadModel> Addresses { get; set; }
         public string ActivationToken { get; set; }
         public DateTime ActivationTokenExpirationDate { get; set; }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SimpleShopD.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Inital : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,7 +42,7 @@ namespace SimpleShopD.Infrastructure.Migrations
                     Password_Hash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Password_Salt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    RoleOfUser = table.Column<int>(type: "int", nullable: false),
+                    UserRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ActivationToken_Value = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     ActivationToken_ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RefreshToken_Value = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
@@ -92,7 +92,7 @@ namespace SimpleShopD.Infrastructure.Migrations
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReceiverFullname_Firstname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ReceiverFullname_Lastname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CurrentStatus = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,10 +169,10 @@ namespace SimpleShopD.Infrastructure.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CurrentStatus",
+                name: "IX_Orders_Status",
                 schema: "shop",
                 table: "Orders",
-                column: "CurrentStatus");
+                column: "Status");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleShopD.Domain.Addresses;
-using SimpleShopD.Domain.Enum;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Domain.Users;
+using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Infrastructure.EF.Contexts;
 
 namespace SimpleShopD.Infrastructure.EF.Repositories
@@ -37,7 +37,7 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
         public async Task<bool> IsAdminAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var user = await _users.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
-            return user != null && user.RoleOfUser == UserRole.Admin;
+            return user != null && Equals(user.UserRole, Role.Admin);
         }
 
         public async Task<bool> IsTheEmailUniqueAsync(string email, CancellationToken cancellationToken = default)

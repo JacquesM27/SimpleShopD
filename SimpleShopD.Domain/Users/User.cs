@@ -14,22 +14,22 @@ namespace SimpleShopD.Domain.Users
         public Fullname Fullname { get; }
         public Email Email { get; }
         public Password Password { get; private set; }
-        public StatusOfAccount Status { get; private set; }
-        public RoleOfUser RoleOfUser { get; private set; }
+        public Status Status { get; private set; }
+        public Role UserRole { get; private set; }
         public IList<Address> Addresses { get; private set; }
         public Token? ActivationToken { get; private set; }
         public Token? RefreshToken { get; private set; }
         public Token? ResetPasswordToken { get; private set; }
 
         public User(Guid id, Fullname fullname, Email email, Password password,
-            RoleOfUser roleOfUser)
+            Role userRole)
             : base(id)
         {
             Fullname = fullname;
             Email = email;
             Password = password;
             Status = AccountStatus.Inactive;
-            RoleOfUser = roleOfUser;
+            UserRole = userRole;
             Addresses = new List<Address>();
             ActivationToken = TokenType.Activation;
         }
@@ -82,14 +82,14 @@ namespace SimpleShopD.Domain.Users
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
             RefreshToken = TokenType.Refresh;
-            string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), RoleOfUser.UserRole, Id, Email);
+            string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
             return new AuthToken(RefreshToken.Value, RefreshToken.ExpirationDate, jwt);
         }
 
-        public void ChangeRole(UserRole userRole)
+        public void ChangeRole(Role userRole)
         {
-            if (RoleOfUser.UserRole != userRole)
-                RoleOfUser = userRole;
+            if (UserRole != userRole)
+                UserRole = userRole;
         }
 
         public void AddAddress(Guid id, string country, string city, string zipCode, string street, string buildingNumber)

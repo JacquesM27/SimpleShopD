@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleShopD.Domain.Orders;
 using SimpleShopD.Domain.Products;
-using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Domain.Users;
-using SimpleShopD.Infrastructure.EF.Config;
 
 namespace SimpleShopD.Infrastructure.EF.Contexts
 {

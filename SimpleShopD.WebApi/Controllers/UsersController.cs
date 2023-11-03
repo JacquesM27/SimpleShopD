@@ -10,6 +10,7 @@ using SimpleShopD.Application.Commands.Users.RefreshToken;
 using SimpleShopD.Application.Commands.Users.ResetPasswordToken;
 using SimpleShopD.Application.Commands.Users.RoleChange;
 using SimpleShopD.Application.Commands.Users.UserRegister;
+using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.WebApi.Controllers
@@ -87,7 +88,7 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Roles = Role.Admin)]
         [HttpPatch("role/change")]
         public async Task<IActionResult> RoleChange(ChangeRole command)
         {

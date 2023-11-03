@@ -29,8 +29,14 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<bool> DoesExist(Guid id, CancellationToken cancellationToken = default) 
-            => await _products.AnyAsync(x => x.Id == id, cancellationToken);
+        public async Task<decimal?> GetPrice(Guid id, CancellationToken cancellationToken = default)
+        {
+            var product = await _products.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+            if (product == null)
+                return null;
+            else
+                return product.Price;
+        }
 
         public async Task<bool> ExistsByTitleAsync(string name, CancellationToken cancellationToken = default)
             => await _products.AnyAsync(x => x.Title == name, cancellationToken);

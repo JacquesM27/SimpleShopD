@@ -78,8 +78,8 @@ namespace SimpleShopD.Infrastructure.EF.Config
                 .HasConversion(x => (int)x.Value, x => new((Domain.Enum.AccountStatus)x))
                 .IsRequired(true);
 
-            builder.Property(x => x.RoleOfUser)
-                .HasConversion(x => (int)x.UserRole, x => new((Domain.Enum.UserRole)x))
+            builder.Property(x => x.UserRole)
+                .HasConversion(x => x.Value, x => new(x))
                 .IsRequired(true);
 
             builder.HasMany(x => x.Addresses)
@@ -184,10 +184,10 @@ namespace SimpleShopD.Infrastructure.EF.Config
                 .IsRequired(true);
             });
 
-            builder.Property(x => x.CurrentStatus)
+            builder.Property(x => x.Status)
                 .HasConversion(x => (int)x.Value, x => new((Domain.Enum.OrderStatus)x))
                 .IsRequired(true);
-            builder.HasIndex(x => x.CurrentStatus);
+            builder.HasIndex(x => x.Status);
 
             builder.HasMany(x => x.OrderLines)
                 .WithOne()
