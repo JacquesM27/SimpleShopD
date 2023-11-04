@@ -73,7 +73,6 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpPatch("token/refresh")]
         public async Task<IActionResult> RefreshToken(GenerateRefreshToken command)
         {

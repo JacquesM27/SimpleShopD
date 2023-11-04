@@ -17,8 +17,8 @@ builder.Services
     .AddDomain()
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
-// Add services to the container.
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -38,6 +38,8 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseShared();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

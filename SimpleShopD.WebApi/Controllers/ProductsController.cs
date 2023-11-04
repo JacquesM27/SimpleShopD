@@ -8,6 +8,7 @@ using SimpleShopD.Application.Queries.Products.GetAll;
 using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 using SimpleShopD.Shared.Abstractions.Queries;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SimpleShopD.WebApi.Controllers
 {
@@ -27,17 +28,17 @@ namespace SimpleShopD.WebApi.Controllers
             _queryDispatcher = queryDispatcher;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(GetProduct command)
+        [HttpGet("{ProductId:guid}")]
+        public async Task<IActionResult> Get([FromRoute] GetProduct command)
         {
             var result = await _queryDispatcher.QueryAsync(command);
             return Ok(result);
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllProducts(GetAllProducts command)
+        public async Task<IActionResult> GetAllProducts()
         {
-            var result = await _queryDispatcher.QueryAsync(command);
+            var result = await _queryDispatcher.QueryAsync(new GetAllProducts());
             return Ok(result);
         }
 

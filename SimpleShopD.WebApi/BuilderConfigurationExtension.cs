@@ -29,12 +29,12 @@ namespace SimpleShopD.WebApi
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        //ValidateIssuer = false,
+                        ValidateIssuer = false,
                         //ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8
                             .GetBytes(builder.Configuration.GetSection("jwt:SecretToken").Value)),
-                        //ValidateAudience = true,
+                        ValidateAudience = false,
                         //ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
                     };
                 });

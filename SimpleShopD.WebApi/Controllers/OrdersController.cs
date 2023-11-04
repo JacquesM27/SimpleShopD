@@ -32,15 +32,15 @@ namespace SimpleShopD.WebApi.Controllers
             _queryDispatcher = queryDispatcher;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetOrder(GetOrder query)
+        [HttpGet("{OrderId:guid}")]
+        public async Task<IActionResult> GetOrder([FromRoute] GetOrder query)
         {
             var result = await _queryDispatcher.QueryAsync(query);
             return Ok(result);
         }
 
-        [HttpGet("user")]
-        public async Task<IActionResult> GetUserOrders(GetBasicUserOrders query)
+        [HttpGet("user/{UserId:guid}")]
+        public async Task<IActionResult> GetUserOrders([FromRoute] GetBasicUserOrders query)
         {
             var result = await _queryDispatcher.QueryAsync(query);
             return Ok(result);

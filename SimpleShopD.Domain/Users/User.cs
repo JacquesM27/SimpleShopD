@@ -56,12 +56,19 @@ namespace SimpleShopD.Domain.Users
             Password = newPassword;
         }
 
-        // TODO: this method should not return any data, but append the refresh token into the cookie through the context accessor
-        // TODO: also lack expiration validation
-        public AuthToken GenerateRefreshToken()
+        public AuthToken GenerateRefreshToken(ITokenProvider tokenProvider, ICookieTokenAccessor cookieTokenAccessor)
         {
+            if (Status == AccountStatus.Inactive)
+                throw new RefreshTokenOperationException("Account is not active");
+            if (RefreshToken is null)
+                throw new RefreshTokenOperationException("Missing refresh.");
+            if (RefreshToken.ExpirationDate < DateTime.UtcNow)
+                throw new RefreshTokenOperationException("Refresh is expired");
+
             RefreshToken = TokenType.Refresh;
-            return new AuthToken(RefreshToken.Value, RefreshToken.ExpirationDate, null);
+            string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
+            cookieTokenAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
+            return new AuthToken(jwt);
         }
 
         public void Activate(string activationToken)
@@ -70,20 +77,22 @@ namespace SimpleShopD.Domain.Users
                 throw new ActivationOperationException("Missing activation token");
             if (activationToken != ActivationToken.Value)
                 throw new ActivationOperationException("Invalid activation token");
+
             Status = AccountStatus.Active;
             ActivationToken = null;
         }
 
-        // TODO: this method should return only the jwt token and append the refresh token into the cookie through the context accessor
-        public AuthToken Login(string password, ITokenProvider tokenProvider)
+        public AuthToken Login(string password, ITokenProvider tokenProvider, ICookieTokenAccessor cookieTokenAccessor)
         {
             if (Status == AccountStatus.Inactive)
                 throw new LoginOperationException("Account is not active");
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
+
             RefreshToken = TokenType.Refresh;
             string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
-            return new AuthToken(RefreshToken.Value, RefreshToken.ExpirationDate, jwt);
+            cookieTokenAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
+            return new AuthToken(jwt);
         }
 
         public void ChangeRole(Role userRole)

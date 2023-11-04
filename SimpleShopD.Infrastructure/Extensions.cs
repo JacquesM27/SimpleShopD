@@ -7,6 +7,7 @@ using SimpleShopD.Domain.Users;
 using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Infrastructure.EF.Contexts;
 using SimpleShopD.Infrastructure.EF.Repositories;
+using SimpleShopD.Infrastructure.HostedServices;
 using SimpleShopD.Infrastructure.Logging;
 using SimpleShopD.Infrastructure.Services;
 using SimpleShopD.Shared.Abstractions.Commands;
@@ -22,6 +23,7 @@ namespace SimpleShopD.Infrastructure
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddTransient<ITokenProvider, TokenProvider>();
+            services.AddTransient<ICookieTokenAccessor, CookieTokenAccessor>();
 
             services.TryDecorate(typeof(ICommandHandler<>), typeof(CommandHandlerLoggerDecorator<>));
             services.TryDecorate(typeof(ICommandTResultHandler<,>), typeof(CommandTValueHandlerLoggerDecorator<,>));
@@ -37,18 +39,12 @@ namespace SimpleShopD.Infrastructure
             services.Configure<MssqlOptions>(section);
 
             services.AddDbContext<WriteDbContext>(x => x.UseSqlServer(options.ConnectionString));
-
-            using (var scope = services.BuildServiceProvider().CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetService<WriteDbContext>();
-                dbContext!.Database.Migrate();
-                dbContext!.AddDefaultAdminAccount();
-            }
+            services.AddHostedService<MigrationHostedService>();
 
             return services;
         }
 
-        private static void AddDefaultAdminAccount(this WriteDbContext dbContext)
+        internal static void AddDefaultAdminAccount(this WriteDbContext dbContext)
         {
             if (dbContext.Users.Any())
                 return;
