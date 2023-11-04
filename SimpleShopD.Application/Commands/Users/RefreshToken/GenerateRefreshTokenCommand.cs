@@ -10,21 +10,24 @@ namespace SimpleShopD.Application.Commands.Users.RefreshToken
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenProvider _tokenProvider;
-        private readonly ICookieTokenAccessor _cookieTokenAccessor;
+        private readonly IContextAccessor _contextAccessor;
 
-        public GenerateRefreshTokenCommand(IUserRepository userRepository, ITokenProvider tokenProvider, ICookieTokenAccessor cookieTokenAccessor)
+        public GenerateRefreshTokenCommand(IUserRepository userRepository, ITokenProvider tokenProvider, IContextAccessor cookieTokenAccessor)
         {
             _userRepository = userRepository;
             _tokenProvider = tokenProvider;
-            _cookieTokenAccessor = cookieTokenAccessor;
+            _contextAccessor = cookieTokenAccessor;
         }
 
         public async Task<AuthToken> HandleAsync(GenerateRefreshToken command)
         {
-            var user = await _userRepository.GetAsync(command.UserId)
-                ?? throw new UserDoesNotExistException(command.UserId.ToString());
+            var userId = _contextAccessor.GetUserId();
+            if (userId == Guid.Empty)
+                throw new UserDoesNotExistException(userId.ToString());
+            var user = await _userRepository.GetAsync(userId)
+                ?? throw new UserDoesNotExistException(userId.ToString());
 
-            var token = user.GenerateRefreshToken(_tokenProvider, _cookieTokenAccessor);
+            var token = user.GenerateRefreshToken(_tokenProvider, _contextAccessor);
             await _userRepository.UpdateAsync(user);
             return token;
         }

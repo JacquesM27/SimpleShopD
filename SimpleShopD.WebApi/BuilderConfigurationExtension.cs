@@ -24,7 +24,8 @@ namespace SimpleShopD.WebApi
 
         public static void ConfigureAuthentication(this WebApplicationBuilder builder)
         {
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters

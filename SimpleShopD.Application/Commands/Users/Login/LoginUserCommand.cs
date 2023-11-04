@@ -10,13 +10,13 @@ namespace SimpleShopD.Application.Commands.Users.Login
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenProvider _tokenProvider;
-        private readonly ICookieTokenAccessor _cookieTokenAccessor;
+        private readonly IContextAccessor _contextAccessor;
 
-        public LoginUserCommand(IUserRepository userRepository, ITokenProvider tokenProvider, ICookieTokenAccessor cookieTokenAccessor)
+        public LoginUserCommand(IUserRepository userRepository, ITokenProvider tokenProvider, IContextAccessor cookieTokenAccessor)
         {
             _userRepository = userRepository;
             _tokenProvider = tokenProvider;
-            _cookieTokenAccessor = cookieTokenAccessor;
+            _contextAccessor = cookieTokenAccessor;
         }
 
         public async Task<AuthToken> HandleAsync(LoginUser command)
@@ -24,7 +24,7 @@ namespace SimpleShopD.Application.Commands.Users.Login
             var user = await _userRepository.GetByEmailAsync(command.Email)
                 ?? throw new UserDoesNotExistException(command.Email);
 
-            var token = user.Login(command.Password, _tokenProvider, _cookieTokenAccessor);
+            var token = user.Login(command.Password, _tokenProvider, _contextAccessor);
             await _userRepository.UpdateAsync(user);
             return token;
         }

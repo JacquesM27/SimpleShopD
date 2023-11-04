@@ -19,6 +19,7 @@ namespace SimpleShopD.Infrastructure.Services
             List<Claim> claims = new()
             {
                 new(ClaimTypes.NameIdentifier, userId.ToString()),
+                new(ClaimTypes.Name, userId.ToString()),
                 new(ClaimTypes.Role, role),
                 new(ClaimTypes.Email, email)
             };

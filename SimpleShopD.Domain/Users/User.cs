@@ -56,18 +56,23 @@ namespace SimpleShopD.Domain.Users
             Password = newPassword;
         }
 
-        public AuthToken GenerateRefreshToken(ITokenProvider tokenProvider, ICookieTokenAccessor cookieTokenAccessor)
+        public AuthToken GenerateRefreshToken(ITokenProvider tokenProvider, IContextAccessor contextAccessor)
         {
             if (Status == AccountStatus.Inactive)
                 throw new RefreshTokenOperationException("Account is not active");
             if (RefreshToken is null)
-                throw new RefreshTokenOperationException("Missing refresh.");
+                throw new RefreshTokenOperationException("Missing refresh");
             if (RefreshToken.ExpirationDate < DateTime.UtcNow)
                 throw new RefreshTokenOperationException("Refresh is expired");
 
+            var refresh = contextAccessor.GetRefreshToken()
+                ?? throw new RefreshTokenOperationException("Missing refresh in request");
+            if(refresh != RefreshToken.Value)
+                throw new RefreshTokenOperationException("Invalid refresh");
+
             RefreshToken = TokenType.Refresh;
             string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
-            cookieTokenAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
+            contextAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
             return new AuthToken(jwt);
         }
 
@@ -82,7 +87,7 @@ namespace SimpleShopD.Domain.Users
             ActivationToken = null;
         }
 
-        public AuthToken Login(string password, ITokenProvider tokenProvider, ICookieTokenAccessor cookieTokenAccessor)
+        public AuthToken Login(string password, ITokenProvider tokenProvider, IContextAccessor cookieTokenAccessor)
         {
             if (Status == AccountStatus.Inactive)
                 throw new LoginOperationException("Account is not active");

@@ -39,10 +39,10 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("user/{UserId:guid}")]
-        public async Task<IActionResult> GetUserOrders([FromRoute] GetBasicUserOrders query)
+        [HttpGet("my")]
+        public async Task<IActionResult> GetUserOrders()
         {
-            var result = await _queryDispatcher.QueryAsync(query);
+            var result = await _queryDispatcher.QueryAsync(new GetBasicUserOrders());
             return Ok(result);
         }
 
@@ -53,7 +53,7 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("orderline/add")]
+        [HttpPost("line/add")]
         public async Task<IActionResult> AddOrderLine(AddOrderLine command)
         {
             await _commandDispatcher.DispatchAsync(command);
@@ -81,7 +81,7 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete("orderline/delete")]
+        [HttpDelete("line/delete")]
         public async Task<IActionResult> DeleteOrderLine(DeleteOrderLine command)
         {
             await _commandDispatcher.DispatchAsync(command);

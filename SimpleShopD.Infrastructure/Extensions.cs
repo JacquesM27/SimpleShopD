@@ -23,7 +23,7 @@ namespace SimpleShopD.Infrastructure
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddTransient<ITokenProvider, TokenProvider>();
-            services.AddTransient<ICookieTokenAccessor, CookieTokenAccessor>();
+            services.AddTransient<IContextAccessor, ContextAccessor>();
 
             services.TryDecorate(typeof(ICommandHandler<>), typeof(CommandHandlerLoggerDecorator<>));
             services.TryDecorate(typeof(ICommandTResultHandler<,>), typeof(CommandTValueHandlerLoggerDecorator<,>));

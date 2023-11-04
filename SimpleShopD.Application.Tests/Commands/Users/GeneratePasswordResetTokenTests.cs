@@ -3,6 +3,7 @@ using NSubstitute;
 using SimpleShopD.Application.Commands.Users.ResetPasswordToken;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
@@ -12,11 +13,13 @@ namespace SimpleShopD.Application.Tests.Commands.Users
     {
         private readonly ICommandHandler<GeneratePasswordResetToken> _handler;
         private readonly IUserRepository _userRepository;
+        private readonly IContextAccessor _contextAccessor;
 
         public GeneratePasswordResetTokenTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
-            _handler = new GeneratePasswordResetTokenCommand(_userRepository);
+            _contextAccessor = Substitute.For<IContextAccessor>();
+            _handler = new GeneratePasswordResetTokenCommand(_userRepository, _contextAccessor);
         }
         private async Task Act(GeneratePasswordResetToken command)
             => await _handler.HandleAsync(command);
@@ -25,24 +28,24 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         public async Task GeneratePasswordResetToken_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
         {
             // Arrange
-            Guid userId = Guid.NewGuid();
-            var command = new GeneratePasswordResetToken(userId);
+            string email = "john.doe@ssd.com";
+            var command = new GeneratePasswordResetToken(email);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
 
             // Assert
             exception.Should().BeOfType<UserDoesNotExistException>();
-            exception.Message.Should().Be(userId.ToString());
+            exception.Message.Should().Be(Guid.Empty.ToString());
         }
 
         [Fact]
         public async Task GeneratePasswordResetToken_ForExistingUser_ShouldNotThrowException()
         {
             // Arrange
-            Guid userId = Guid.NewGuid();
-            var command = new GeneratePasswordResetToken(userId);
-            _userRepository.GetAsync(userId).Returns(TestUserExtension.CreateValidUser(Role.User));
+            string email = "john.doe@ssd.com";
+            var command = new GeneratePasswordResetToken(email);
+            _userRepository.GetAsync(Guid.Empty).Returns(TestUserExtension.CreateValidUser(Role.User));
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));

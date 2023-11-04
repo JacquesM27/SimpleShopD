@@ -73,14 +73,15 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPatch("token/refresh")]
-        public async Task<IActionResult> RefreshToken(GenerateRefreshToken command)
+        public async Task<IActionResult> RefreshToken()
         {
-            var result = await _commandTResultDispatcher.DispatchAsync(command);
+            var result = await _commandTResultDispatcher.DispatchAsync(new GenerateRefreshToken());
             return Ok(result);
         }
 
-        [HttpPatch("password/token/reset")]
+        [HttpPatch("password/reset")]
         public async Task<IActionResult> ResetPasswordToken(GeneratePasswordResetToken command)
         {
             await _commandDispatcher.DispatchAsync(command);

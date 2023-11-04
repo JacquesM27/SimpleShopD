@@ -3,5 +3,5 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.AddressAdd
 {
-    public sealed record AddAddress(Guid UserId, AddressDto Address) : ICommandTResult<Guid>;
+    public sealed record AddAddress(AddressDto Address) : ICommandTResult<Guid>;
 }

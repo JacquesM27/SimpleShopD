@@ -1,9 +1,11 @@
 ﻿namespace SimpleShopD.Domain.Services
 {
-    public interface ICookieTokenAccessor
+    public interface IContextAccessor
     {
         string? GetRefreshToken();
 
         void AppendRefreshToken(string refreshToken, DateTime expires);
+
+        Guid GetUserId();
     }
 }

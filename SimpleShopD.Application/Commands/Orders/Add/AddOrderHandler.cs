@@ -1,6 +1,7 @@
 ﻿using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Orders;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
@@ -11,22 +12,25 @@ namespace SimpleShopD.Application.Commands.Orders.Add
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IContextAccessor _contextAccessor;
 
-        public AddOrderHandler(IOrderRepository orderRepository, IUserRepository userRepository, IProductRepository productRepository)
+        public AddOrderHandler(IOrderRepository orderRepository, IUserRepository userRepository, IProductRepository productRepository, IContextAccessor contextAccessor)
         {
             _orderRepository = orderRepository;
             _userRepository = userRepository;
             _productRepository = productRepository;
+            _contextAccessor = contextAccessor;
         }
 
         public async Task<Guid> HandleAsync(AddOrder command)
         {
-           if(!await _userRepository.DoesExistAsync(command.UserId))
-                throw new UserDoesNotExistException(command.UserId.ToString());
+            var userId = _contextAccessor.GetUserId();
+           if(!await _userRepository.DoesExistAsync(userId))
+                throw new UserDoesNotExistException(userId.ToString());
 
             var fullname = MapFullname(command);
 
-            var order = new Order(Guid.NewGuid(), command.UserId, command.OrderAddress, fullname);
+            var order = new Order(Guid.NewGuid(), userId, command.OrderAddress, fullname);
             command.OrderLines.ToList().ForEach(async x =>
             {
                 var price = await _productRepository.GetPrice(x.ProductId) ??

@@ -3,11 +3,11 @@ using SimpleShopD.Domain.Services;
 
 namespace SimpleShopD.Infrastructure.Services
 {
-    public sealed class CookieTokenAccessor : ICookieTokenAccessor
+    public sealed class ContextAccessor : IContextAccessor
     {
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public CookieTokenAccessor(IHttpContextAccessor contextAccessor) 
+        public ContextAccessor(IHttpContextAccessor contextAccessor) 
             => _contextAccessor = contextAccessor;
 
         public void AppendRefreshToken(string refreshToken, DateTime expires)
@@ -21,9 +21,9 @@ namespace SimpleShopD.Infrastructure.Services
         }
 
         public string? GetRefreshToken()
-        {
-            var refreshToken = _contextAccessor?.HttpContext?.Request.Cookies["refreshToken"];
-            return refreshToken;
-        }
+            => _contextAccessor?.HttpContext?.Request.Cookies["refreshToken"];
+
+        public Guid GetUserId()
+            => string.IsNullOrEmpty(_contextAccessor.HttpContext?.User?.Identity?.Name) ? Guid.Empty : Guid.Parse(_contextAccessor!.HttpContext!.User!.Identity!.Name!);
     }
 }

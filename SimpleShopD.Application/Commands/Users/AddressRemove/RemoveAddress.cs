@@ -2,5 +2,5 @@
 
 namespace SimpleShopD.Application.Commands.Users.AddressRemove
 {
-    public sealed record RemoveAddress(Guid UserId, Guid AddressId) : ICommand;
+    public sealed record RemoveAddress(Guid AddressId) : ICommand;
 }
