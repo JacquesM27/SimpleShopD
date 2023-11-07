@@ -17,11 +17,11 @@ namespace SimpleShopD.Application.Commands.Products.Delete
 
         public async Task HandleAsync(DeleteProduct command)
         {
-            var product = await _productRepository.GetAsync(command.Id)
-                ?? throw new ProductDoesNotExistException(command.Id.ToString());
+            var product = await _productRepository.GetAsync(command.ProductId)
+                ?? throw new ProductDoesNotExistException(command.ProductId.ToString());
 
-            if (await _orderRepository.ProductExistsOnSomeOrder(command.Id))
-                throw new ProductExistsOnSomeOrderException(command.Id.ToString());
+            if (await _orderRepository.ProductExistsOnSomeOrder(command.ProductId))
+                throw new ProductExistsOnSomeOrderException(command.ProductId.ToString());
 
             await _productRepository.DeleteAsync(product);
         }

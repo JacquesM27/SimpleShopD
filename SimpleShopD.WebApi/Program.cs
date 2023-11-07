@@ -5,6 +5,7 @@ using SimpleShopD.Infrastructure;
 using SimpleShopD.Shared;
 using SimpleShopD.WebApi;
 
+string policyName = "SomePolicyName";
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
@@ -18,13 +19,15 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
+builder.ConfigureSwagger()
+    .ConfigureCors(policyName)
+    .ConfigureAuthentication();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.ConfigureSwagger();
-builder.ConfigureAuthentication();
 
 var app = builder.Build();
 
@@ -38,6 +41,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseShared();
+
+app.UseCors(policyName);
 
 app.UseAuthentication();
 

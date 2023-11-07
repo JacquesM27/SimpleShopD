@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -7,7 +8,7 @@ namespace SimpleShopD.WebApi
 {
     public static class BuilderConfigurationExtension
     {
-        public static void ConfigureSwagger(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder ConfigureSwagger(this WebApplicationBuilder builder)
         {
             builder.Services.AddSwaggerGen(options =>
             {
@@ -20,9 +21,10 @@ namespace SimpleShopD.WebApi
                 });
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
             });
+            return builder;
         }
 
-        public static void ConfigureAuthentication(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
         {
             builder.Services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -39,6 +41,28 @@ namespace SimpleShopD.WebApi
                         //ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
                     };
                 });
+            return builder;
+        }
+
+        public static WebApplicationBuilder ConfigureCors(this WebApplicationBuilder builder, string policyName)
+        {
+            var corsSection = builder.Configuration.GetSection("Cors:AllowedOrigins");
+            var allowedOrigins = new List<string>();
+            corsSection.Bind(allowedOrigins);
+            if (!allowedOrigins.Any())
+                return builder;
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: policyName,
+                    policy =>
+                    {
+                        policy.WithOrigins(allowedOrigins.ToArray())
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+            return builder;
         }
     }
 }

@@ -44,8 +44,8 @@ namespace SimpleShopD.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpDelete("address/remove")]
-        public async Task<IActionResult> AddressRemove(RemoveAddress command)
+        [HttpDelete("address/remove/{AddressId:guid}")]
+        public async Task<IActionResult> AddressRemove([FromRoute]RemoveAddress command)
         {
             await _commandDispatcher.DispatchAsync(command);
             return Ok();

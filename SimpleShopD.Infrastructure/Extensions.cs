@@ -36,7 +36,7 @@ namespace SimpleShopD.Infrastructure
             var section = configuration.GetSection("mssql");
             var options = new MssqlOptions();
             section.Bind(options);
-            services.Configure<MssqlOptions>(section);
+            //services.Configure<MssqlOptions>(section);
 
             services.AddDbContext<WriteDbContext>(x => x.UseSqlServer(options.ConnectionString));
             services.AddHostedService<MigrationHostedService>();

@@ -51,8 +51,8 @@ namespace SimpleShopD.WebApi.Controllers
         }
 
         [Authorize(Roles = Role.Admin)]
-        [HttpDelete("delete")]
-        public async Task<IActionResult> Delete(DeleteProduct command)
+        [HttpDelete("delete/{ProductId:guid}")]
+        public async Task<IActionResult> Delete([FromRoute]DeleteProduct command)
         {
             await _commandDispatcher.DispatchAsync(command);
             return Ok();

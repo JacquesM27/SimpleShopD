@@ -81,8 +81,8 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete("line/delete")]
-        public async Task<IActionResult> DeleteOrderLine(DeleteOrderLine command)
+        [HttpDelete("line/delete/{OrderId:guid}/{LineId:guid}")]
+        public async Task<IActionResult> DeleteOrderLine([FromRoute]DeleteOrderLine command)
         {
             await _commandDispatcher.DispatchAsync(command);
             return Ok();
