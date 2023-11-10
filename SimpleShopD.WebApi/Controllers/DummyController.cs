@@ -8,14 +8,14 @@ namespace SimpleShopD.WebApi.Controllers
     [ApiController]
     public class DummyController : ControllerBase
     {
-        [HttpPost]
+        [HttpPost("hi")]
         public Task<IActionResult> Hi()
         {
             return Task.FromResult<IActionResult>(Ok(JsonSerializer.Serialize(new { message = "hello"})));
         }
 
         [Authorize]
-        [HttpPost("/auth")]
+        [HttpPost("hi/auth")]
         public Task<IActionResult> AuthorizedHi()
         {
             return Task.FromResult<IActionResult>(Ok(JsonSerializer.Serialize(new { message = "authorized hello" })));

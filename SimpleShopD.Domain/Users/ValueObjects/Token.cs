@@ -1,5 +1,5 @@
 ﻿using SimpleShopD.Domain.Enum;
-using System.Security.Cryptography;
+using SimpleShopD.Domain.Users.Exceptions;
 
 namespace SimpleShopD.Domain.Users.ValueObjects
 {
@@ -9,9 +9,12 @@ namespace SimpleShopD.Domain.Users.ValueObjects
         public DateTime ExpirationDate { get; }
         public bool IsExpired => DateTime.UtcNow > ExpirationDate;
 
-        public Token(TokenType tokenType)
+        public Token(TokenType tokenType, string value)
         {
-            Value = GenerateToken();
+            if (string.IsNullOrEmpty(value)) 
+                throw new InvalidTokenLengthException(nameof(value));
+
+            Value = value;
             ExpirationDate = tokenType switch
             {
                 TokenType.Activation => DateTime.UtcNow.AddDays(1),
@@ -22,15 +25,5 @@ namespace SimpleShopD.Domain.Users.ValueObjects
         }
 
         private Token() { }
-
-        private static string GenerateToken()
-        {
-            using var rng = RandomNumberGenerator.Create();
-            byte[] tokenData = new byte[64];
-            rng.GetBytes(tokenData);
-            return Convert.ToBase64String(tokenData);
-        }
-
-        public static implicit operator Token(TokenType tokenType) => new(tokenType);
     }
 }

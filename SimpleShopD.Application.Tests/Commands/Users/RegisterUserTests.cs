@@ -6,6 +6,7 @@ using SimpleShopD.Application.Dto;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Policies;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
@@ -15,6 +16,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
     {
         private readonly ICommandTResultHandler<RegisterUser, Guid> _commandHandler;
         private readonly IUserRepository _userRepository;
+        private readonly ITokenProvider _tokenProvider;
 
         public RegisterUserTests()
         {
@@ -22,7 +24,8 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             var provieder = services.BuildServiceProvider();
 
             _userRepository = Substitute.For<IUserRepository>();
-            _commandHandler = new RegisterUserCommand(_userRepository, provieder.GetServices<ICreateUserPolicy>());
+            _tokenProvider = Substitute.For<ITokenProvider>();
+            _commandHandler = new RegisterUserCommand(_userRepository, provieder.GetServices<ICreateUserPolicy>(), _tokenProvider);
         }
 
         private async Task<Guid> Act(RegisterUser command)
@@ -34,6 +37,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!", 
                 Role.User, new List<AddressDto>(), "User", null);
+            _tokenProvider.GenerateRandomToken().Returns(TestUserExtension.GenerateRandomToken());
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
 
             // Act
@@ -51,6 +55,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             Guid authorId = Guid.NewGuid();
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
                 Role.Admin, new List<AddressDto>(), "User", authorId);
+            _tokenProvider.GenerateRandomToken().Returns(TestUserExtension.GenerateRandomToken());
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
             _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(Role.Admin));
 
@@ -68,6 +73,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             Guid authorId = Guid.NewGuid();
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
                 Role.Admin, new List<AddressDto>(), "User", authorId);
+            _tokenProvider.GenerateRandomToken().Returns(TestUserExtension.GenerateRandomToken());
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
             _userRepository.GetAsync(authorId).Returns(TestUserExtension.CreateValidUser(Role.User));
 
@@ -85,6 +91,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             var command = new RegisterUser("John", "Doe", "john@example.com", "JohnDoe123!",
                 Role.Admin, new List<AddressDto>(), "User", null);
+            _tokenProvider.GenerateRandomToken().Returns(TestUserExtension.GenerateRandomToken());
             _userRepository.IsTheEmailUniqueAsync(command.Email).Returns(true);
 
             // Act

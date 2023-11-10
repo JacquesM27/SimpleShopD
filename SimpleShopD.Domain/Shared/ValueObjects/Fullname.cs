@@ -22,5 +22,8 @@ namespace SimpleShopD.Domain.Shared.ValueObjects
             Firstname = firstname;
             Lastname = lastname;
         }
+
+        public override string ToString()
+            => $"{Firstname} {Lastname}";
     }
 }

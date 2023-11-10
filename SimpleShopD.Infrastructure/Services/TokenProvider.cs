@@ -4,6 +4,7 @@ using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Users.ValueObjects;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace SimpleShopD.Infrastructure.Services
 {
@@ -34,6 +35,14 @@ namespace SimpleShopD.Infrastructure.Services
                 );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
+        }
+
+        public string GenerateRandomToken()
+        {
+            using var rng = RandomNumberGenerator.Create();
+            byte[] tokenData = new byte[64];
+            rng.GetBytes(tokenData);
+            return Convert.ToBase64String(tokenData);
         }
     }
 }

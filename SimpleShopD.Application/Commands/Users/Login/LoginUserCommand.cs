@@ -6,7 +6,7 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.Login
 {
-    internal sealed class LoginUserCommand : ICommandTResultHandler<LoginUser, AuthToken>
+    internal sealed class LoginUserCommand : ICommandTResultHandler<LoginUser, AuthResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenProvider _tokenProvider;
@@ -19,7 +19,7 @@ namespace SimpleShopD.Application.Commands.Users.Login
             _contextAccessor = cookieTokenAccessor;
         }
 
-        public async Task<AuthToken> HandleAsync(LoginUser command)
+        public async Task<AuthResponse> HandleAsync(LoginUser command)
         {
             var user = await _userRepository.GetByEmailAsync(command.Email)
                 ?? throw new UserDoesNotExistException(command.Email);

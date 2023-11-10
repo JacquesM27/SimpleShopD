@@ -3,6 +3,7 @@ using NSubstitute;
 using SimpleShopD.Application.Commands.Users.RoleChange;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Repositories;
+using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 

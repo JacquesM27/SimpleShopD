@@ -59,7 +59,8 @@ namespace SimpleShopD.WebApi
                     {
                         policy.WithOrigins(allowedOrigins.ToArray())
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
+                            .AllowAnyMethod()
+                            .AllowCredentials();
                     });
             });
             return builder;

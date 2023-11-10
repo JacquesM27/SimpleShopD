@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using SimpleShopD.Domain.Addresses.Exceptions;
 using SimpleShopD.Domain.Enum;
+using SimpleShopD.Domain.Services;
 using SimpleShopD.Domain.Shared.Exceptions;
 using SimpleShopD.Domain.Shared.ValueObjects;
 using SimpleShopD.Domain.Users;
@@ -19,10 +20,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "john.doe@ssd.com";
             string password = "12345Abc@";
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<EmptyFullnameException>();
@@ -37,10 +39,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = string.Empty;
             string emailAddress = "john.doe@ssd.com";
             string password = "12345Abc@";
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<EmptyFullnameException>();
@@ -57,10 +60,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "john.doe@ssd.com";
             string password = "12345Abc@";
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<InvalidFullnameLengthException>();
@@ -77,10 +81,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = GenerateRandomText(lastNameLength);
             string emailAddress = "john.doe@ssd.com";
             string password = "12345Abc@";
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<InvalidFullnameLengthException>();
@@ -95,10 +100,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "JohnDoe";
             string password = "12345Abc@";
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<InvalidEmailException>();
@@ -113,10 +119,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = GenerateRandomText(500) + "@company.com";
             string password = "12345Abc@";
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<InvalidEmailException>();
@@ -131,10 +138,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "john.doe@ssd.com";
             string password = string.Empty;
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<PasswordPolicyException>();
@@ -149,10 +157,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "john.doe@ssd.com";
             string password = "JohnDoe1222334234234";
+            string token = GenerateRandomText(64);
 
             // Act
             var exception = Record.Exception(() => new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User));
+                lastName), emailAddress, password, Role.User, token));
 
             // Assert
             exception.Should().BeOfType<PasswordPolicyException>();
@@ -172,9 +181,10 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "john.doe@ssd.com";
             string password = "JohnDoe123!";
+            string token = GenerateRandomText(64);
 
             // Act
-            var user = new User(Guid.NewGuid(), new Fullname(firstName, lastName), emailAddress, password, Role.User);
+            var user = new User(Guid.NewGuid(), new Fullname(firstName, lastName), emailAddress, password, Role.User, token);
             var exception = Record.Exception(() => user.AddAddress(Guid.NewGuid(), country, city, zipCode, street, buildingNumber));
 
             // Assert
@@ -190,10 +200,11 @@ namespace SimpleShopD.Domain.Tests
             string lastName = "Doe";
             string emailAddress = "john.doe@ssd.com";
             string password = "JohnDoe123!";
+            string token = GenerateRandomText(64);
 
             // Act
             var user = new User(Guid.NewGuid(), new Fullname(firstName,
-                lastName), emailAddress, password, Role.User);
+                lastName), emailAddress, password, Role.User, token);
             user.AddAddress(Guid.NewGuid(), "Poland", "Warsaw", "00-000", "Złota", "1");
             user.AddAddress(Guid.NewGuid(), "Poland", "Warsaw", "00-000", "Złota", "2");
 

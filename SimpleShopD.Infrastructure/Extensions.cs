@@ -49,7 +49,7 @@ namespace SimpleShopD.Infrastructure
             if (dbContext.Users.Any())
                 return;
 
-            var defaultAdmin = new User(Guid.NewGuid(), new("Jacob", "Admin"), "admin@simpleshop.com", new("12345Abc!"), Role.Admin);
+            var defaultAdmin = new User(Guid.NewGuid(), new("Jacob", "Admin"), "admin@simpleshop.com", new("12345Abc!"), Role.Admin, "some dummy token");
             defaultAdmin.Activate(defaultAdmin.ActivationToken!.Value);
 
             dbContext.Users.Add(defaultAdmin);

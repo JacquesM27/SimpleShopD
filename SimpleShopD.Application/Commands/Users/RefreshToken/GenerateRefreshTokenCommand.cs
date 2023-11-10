@@ -6,7 +6,7 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.RefreshToken
 {
-    internal sealed class GenerateRefreshTokenCommand : ICommandTResultHandler<GenerateRefreshToken, AuthToken>
+    internal sealed class GenerateRefreshTokenCommand : ICommandTResultHandler<GenerateRefreshToken, AuthResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenProvider _tokenProvider;
@@ -19,7 +19,7 @@ namespace SimpleShopD.Application.Commands.Users.RefreshToken
             _contextAccessor = cookieTokenAccessor;
         }
 
-        public async Task<AuthToken> HandleAsync(GenerateRefreshToken command)
+        public async Task<AuthResponse> HandleAsync(GenerateRefreshToken command)
         {
             var userId = _contextAccessor.GetUserId();
             if (userId == Guid.Empty)

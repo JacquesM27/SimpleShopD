@@ -14,12 +14,14 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         private readonly ICommandHandler<GeneratePasswordResetToken> _handler;
         private readonly IUserRepository _userRepository;
         private readonly IContextAccessor _contextAccessor;
+        private readonly ITokenProvider _tokenProvider;
 
         public GeneratePasswordResetTokenTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _contextAccessor = Substitute.For<IContextAccessor>();
-            _handler = new GeneratePasswordResetTokenCommand(_userRepository, _contextAccessor);
+            _tokenProvider = Substitute.For<ITokenProvider>();
+            _handler = new GeneratePasswordResetTokenCommand(_userRepository, _contextAccessor, _tokenProvider);
         }
         private async Task Act(GeneratePasswordResetToken command)
             => await _handler.HandleAsync(command);
@@ -45,6 +47,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             string email = "john.doe@ssd.com";
             var command = new GeneratePasswordResetToken(email);
+            _tokenProvider.GenerateRandomToken().Returns(TestUserExtension.GenerateRandomToken());
             _userRepository.GetAsync(Guid.Empty).Returns(TestUserExtension.CreateValidUser(Role.User));
 
             // Act

@@ -22,7 +22,7 @@ namespace SimpleShopD.Domain.Users
         public Token? ResetPasswordToken { get; private set; }
 
         public User(Guid id, Fullname fullname, Email email, Password password,
-            Role userRole)
+            Role userRole, string activationToken)
             : base(id)
         {
             Fullname = fullname;
@@ -31,13 +31,13 @@ namespace SimpleShopD.Domain.Users
             Status = AccountStatus.Inactive;
             UserRole = userRole;
             Addresses = new List<Address>();
-            ActivationToken = TokenType.Activation;
+            ActivationToken = new Token(TokenType.Activation, activationToken);
         }
 
         private User() : base(Guid.NewGuid()) { }
 
-        public void GeneratePasswordResetToken()
-            => ResetPasswordToken = TokenType.ResetPassword;
+        public void GeneratePasswordResetToken(ITokenProvider tokenProvider)
+            => ResetPasswordToken = new Token(TokenType.ResetPassword, tokenProvider.GenerateRandomToken());
 
         public void SetNewPassword(string newPassword, string resetPasswordToken)
         {
@@ -56,7 +56,7 @@ namespace SimpleShopD.Domain.Users
             Password = newPassword;
         }
 
-        public AuthToken GenerateRefreshToken(ITokenProvider tokenProvider, IContextAccessor contextAccessor)
+        public AuthResponse GenerateRefreshToken(ITokenProvider tokenProvider, IContextAccessor contextAccessor)
         {
             if (Status == AccountStatus.Inactive)
                 throw new RefreshTokenOperationException("Account is not active");
@@ -70,14 +70,16 @@ namespace SimpleShopD.Domain.Users
             if(refresh != RefreshToken.Value)
                 throw new RefreshTokenOperationException("Invalid refresh");
 
-            RefreshToken = TokenType.Refresh;
+            RefreshToken = new Token(TokenType.Refresh, tokenProvider.GenerateRandomToken());
             string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
             contextAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
-            return new AuthToken(jwt);
+            return new AuthResponse(jwt, Fullname.ToString());
         }
 
         public void Activate(string activationToken)
         {
+            if (Status.Value == AccountStatus.Active)
+                return;
             if (ActivationToken is null)
                 throw new ActivationOperationException("Missing activation token");
             if (activationToken != ActivationToken.Value)
@@ -87,17 +89,17 @@ namespace SimpleShopD.Domain.Users
             ActivationToken = null;
         }
 
-        public AuthToken Login(string password, ITokenProvider tokenProvider, IContextAccessor cookieTokenAccessor)
+        public AuthResponse Login(string password, ITokenProvider tokenProvider, IContextAccessor cookieTokenAccessor)
         {
             if (Status == AccountStatus.Inactive)
                 throw new LoginOperationException("Account is not active");
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
 
-            RefreshToken = TokenType.Refresh;
+            RefreshToken = new Token(TokenType.Refresh,tokenProvider.GenerateRandomToken());
             string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
             cookieTokenAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
-            return new AuthToken(jwt);
+            return new AuthResponse(jwt, Fullname.ToString());
         }
 
         public void ChangeRole(Role userRole)

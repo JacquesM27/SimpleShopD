@@ -16,6 +16,8 @@ namespace SimpleShopD.Infrastructure.Services
             {
                 HttpOnly = true,
                 Expires = expires,
+                SameSite = SameSiteMode.None,
+                Secure = true
             };
             _contextAccessor?.HttpContext?.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }

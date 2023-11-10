@@ -74,7 +74,7 @@ namespace SimpleShopD.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPatch("token/refresh")]
+        [HttpPost("token/refresh")]
         public async Task<IActionResult> RefreshToken()
         {
             var result = await _commandTResultDispatcher.DispatchAsync(new GenerateRefreshToken());
