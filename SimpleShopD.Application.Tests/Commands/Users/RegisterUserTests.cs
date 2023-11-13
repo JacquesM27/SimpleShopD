@@ -45,7 +45,6 @@ namespace SimpleShopD.Application.Tests.Commands.Users
 
             // Assert
             userId.Should().NotBeEmpty();
-            //Assert.NotEqual(Guid.Empty, userId);
         }
 
         [Fact]
@@ -63,7 +62,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             var userId = await Act(command);
 
             // Assert
-            Assert.NotEqual(Guid.Empty, userId);
+            userId.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -99,7 +98,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
 
             // Assert
             exception.Should().BeOfType<CannotCreateUserPolicyException>();
-            exception.Message.Should().Be(string.Empty);
+            exception.Message.Should().BeEmpty();
         }
     }
 }

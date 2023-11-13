@@ -3,7 +3,7 @@ using NSubstitute;
 using SimpleShopD.Application.Commands.Users.RoleChange;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Repositories;
-using SimpleShopD.Domain.Services;
+using SimpleShopD.Domain.Users;
 using SimpleShopD.Domain.Users.ValueObjects;
 using SimpleShopD.Shared.Abstractions.Commands;
 
@@ -38,18 +38,51 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        public async Task ChangeRole_ForExistingUser_ShouldNotThrowException()
+        public async Task ChangeRole_ForExistingUser_ShouldSetUserRole()
         {
             // Arrange
-            Guid userId = Guid.NewGuid();
-            var command = new ChangeRole(userId, Role.User);
-            _userRepository.GetAsync(userId).Returns(TestUserExtension.CreateValidUser(Role.User));
+            var command = new ChangeRole(Guid.Empty, Role.User);
+            var user = TestUserExtension.CreateValidUser(Role.User);
+            _userRepository.GetAsync(Guid.Empty).Returns(user);
 
             // Act
-            var exception = await Record.ExceptionAsync(() => Act(command));
+            await Act(command);
 
             // Assert
-            exception.Should().BeNull();
+            await _userRepository.Received(1).UpdateAsync(Arg.Any<User>());
+            user.UserRole.Value.Should().Be(Role.User);
+        }
+
+        [Fact]
+        public async Task ChangeRole_ForExistingAdmin_ShouldSetUserRole()
+        {
+            // Arrange
+            var command = new ChangeRole(Guid.Empty, Role.User);
+            var user = TestUserExtension.CreateValidUser(Role.Admin);
+            _userRepository.GetAsync(Guid.Empty).Returns(user);
+
+            // Act
+            await Act(command);
+
+            // Assert
+            await _userRepository.Received(1).UpdateAsync(Arg.Any<User>());
+            user.UserRole.Value.Should().Be(Role.User);
+        }
+
+        [Fact]
+        public async Task ChangeRole_ForExistingUser_ShouldSetAdminRole()
+        {
+            // Arrange
+            var command = new ChangeRole(Guid.Empty, Role.Admin);
+            var user = TestUserExtension.CreateValidUser(Role.User);
+            _userRepository.GetAsync(Guid.Empty).Returns(user);
+
+            // Act
+            await Act(command);
+
+            // Assert
+            await _userRepository.Received(1).UpdateAsync(Arg.Any<User>());
+            user.UserRole.Value.Should().Be(Role.Admin);
         }
     }
 }

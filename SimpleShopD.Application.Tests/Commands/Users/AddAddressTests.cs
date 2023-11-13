@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using SimpleShopD.Application.Commands.Users.ResetPasswordToken;
+using SimpleShopD.Application.Commands.Users.AddressAdd;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Repositories;
 using SimpleShopD.Domain.Services;
@@ -10,29 +10,28 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
 {
-    public class GeneratePasswordResetTokenTests
+    public class AddAddressTests
     {
-        private readonly ICommandHandler<GeneratePasswordResetToken> _handler;
+        private readonly ICommandTResultHandler<AddAddress, Guid> _handler;
         private readonly IUserRepository _userRepository;
         private readonly IContextAccessor _contextAccessor;
-        private readonly ITokenProvider _tokenProvider;
 
-        public GeneratePasswordResetTokenTests()
+        public AddAddressTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _contextAccessor = Substitute.For<IContextAccessor>();
-            _tokenProvider = Substitute.For<ITokenProvider>();
-            _handler = new GeneratePasswordResetTokenCommand(_userRepository, _contextAccessor, _tokenProvider);
+            _handler = new AddAddressCommand(_userRepository, _contextAccessor);
         }
-        private async Task Act(GeneratePasswordResetToken command)
+
+        private async Task Act(AddAddress command)
             => await _handler.HandleAsync(command);
 
         [Fact]
-        public async Task GeneratePasswordResetToken_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
+        public async Task AddAddress_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
         {
             // Arrange
-            string email = "john.doe@ssd.com";
-            var command = new GeneratePasswordResetToken(email);
+            var address = new Dto.AddressDto("Poland", "Warsaw", "09-009", "Złota", "63");
+            var command = new AddAddress(address);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
@@ -43,13 +42,12 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        public async Task GeneratePasswordResetToken_ForExistingUser_ShouldNotThrowException()
+        public async Task AddAddress_ForValidAddress_ShouldAddAddress()
         {
             // Arrange
-            string email = "john.doe@ssd.com";
-            var command = new GeneratePasswordResetToken(email);
+            var address = new Dto.AddressDto("Poland", "Warsaw", "09-009", "Złota", "63");
+            var command = new AddAddress(address);
             var user = TestUserExtension.CreateValidUser(Role.User);
-            _tokenProvider.GenerateRandomToken().Returns(TestUserExtension.GenerateRandomToken());
             _userRepository.GetAsync(Guid.Empty).Returns(user);
 
             // Act
@@ -57,9 +55,8 @@ namespace SimpleShopD.Application.Tests.Commands.Users
 
             // Assert
             await _userRepository.Received(1).UpdateAsync(Arg.Any<User>());
-            user.ResetPasswordToken.Should().NotBeNull();
-            user.ResetPasswordToken!.Value.Should().NotBeEmpty();
-            user.ResetPasswordToken!.IsExpired.Should().BeFalse();
+            user.Addresses.Should().NotBeNull();
+            user.Addresses.Count.Should().Be(1);
         }
     }
 }

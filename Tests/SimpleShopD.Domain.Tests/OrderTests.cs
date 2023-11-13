@@ -42,6 +42,7 @@ namespace SimpleShopD.Domain.Tests
             order.ReceiverFullname.Firstname.Should().Be(firstName);
             order.ReceiverFullname.Lastname.Should().Be(lastName);
             order.OrderLines.Count.Should().Be(0);
+            order.AddressId.Should().Be(addressId);
         }
     }
 }

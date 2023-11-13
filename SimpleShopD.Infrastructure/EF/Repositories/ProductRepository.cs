@@ -46,6 +46,10 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
 
         public async Task UpdateAsync(Product product)
         {
+            var entry = _context.Entry(product);
+            if (entry.State is EntityState.Unchanged or EntityState.Detached)
+                return;
+
             _products.Update(product);
             await _context.SaveChangesAsync();
         }

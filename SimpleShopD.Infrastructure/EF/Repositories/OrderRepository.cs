@@ -19,7 +19,7 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
         public async Task<Guid> AddAsync(Order order, CancellationToken cancellationToken = default)
         {
             await _orders.AddAsync(order, cancellationToken);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return order.Id;
         }
 
@@ -31,6 +31,10 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
 
         public async Task UpdateAsync(Order order, CancellationToken cancellationToken = default)
         {
+            var entry = _context.Entry(order);
+            if (entry.State is EntityState.Unchanged or EntityState.Detached)
+                return;
+
             _orders.Update(order);
             await _context.SaveChangesAsync(cancellationToken);
         }
