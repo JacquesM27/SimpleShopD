@@ -38,6 +38,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Assert
             exception.Should().BeOfType<UserDoesNotExistException>();
             exception.Message.Should().Be(Guid.Empty.ToString());
+            await _userRepository.Received(0).UpdateAsync(Arg.Any<User>());
         }
 
         [Fact]
