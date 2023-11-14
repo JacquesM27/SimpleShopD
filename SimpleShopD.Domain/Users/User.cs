@@ -71,7 +71,7 @@ namespace SimpleShopD.Domain.Users
                 throw new RefreshTokenOperationException("Invalid refresh");
 
             RefreshToken = new Token(TokenType.Refresh, tokenProvider.GenerateRandomToken());
-            string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
+            string jwt = tokenProvider.Provide(UserRole, Id, Email);
             contextAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
             return new AuthResponse(jwt, Fullname.ToString());
         }
@@ -91,13 +91,13 @@ namespace SimpleShopD.Domain.Users
 
         public AuthResponse Login(string password, ITokenProvider tokenProvider, IContextAccessor cookieTokenAccessor)
         {
-            if (Status == AccountStatus.Inactive)
-                throw new LoginOperationException("Account is not active");
             if (!Password.VerifyPassword(password))
                 throw new LoginOperationException("Invalid password");
+            if (Status == AccountStatus.Inactive)
+                throw new LoginOperationException("Account is not active");
 
             RefreshToken = new Token(TokenType.Refresh,tokenProvider.GenerateRandomToken());
-            string jwt = tokenProvider.Provide(DateTime.Now.AddMinutes(5), UserRole, Id, Email);
+            string jwt = tokenProvider.Provide( UserRole, Id, Email);
             cookieTokenAccessor.AppendRefreshToken(RefreshToken.Value, RefreshToken.ExpirationDate);
             return new AuthResponse(jwt, Fullname.ToString());
         }

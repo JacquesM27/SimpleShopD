@@ -4,7 +4,7 @@ namespace SimpleShopD.Domain.Services
 {
     public interface ITokenProvider
     {
-        string Provide(DateTime expirationDate, Role role, Guid userId, string email);
+        string Provide(Role role, Guid userId, string email);
         string GenerateRandomToken();
     }
 }

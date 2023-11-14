@@ -15,8 +15,9 @@ namespace SimpleShopD.Infrastructure.Services
         public TokenProvider(IConfiguration configuration) 
             => _configuration = configuration;
 
-        public string Provide(DateTime expirationDate, Role role, Guid userId, string email)
+        public string Provide(Role role, Guid userId, string email)
         {
+            DateTime expirationDate = DateTime.UtcNow.AddMinutes(5);
             List<Claim> claims = new()
             {
                 new(ClaimTypes.NameIdentifier, userId.ToString()),
