@@ -3,26 +3,21 @@ using NSubstitute;
 using SimpleShopD.Application.Commands.Users.NewPassword;
 using SimpleShopD.Application.Exceptions;
 using SimpleShopD.Domain.Repositories;
-using SimpleShopD.Domain.Users.ValueObjects;
-using SimpleShopD.Domain.Users;
-using SimpleShopD.Shared.Abstractions.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SimpleShopD.Domain.Users.Exceptions;
 using SimpleShopD.Domain.Services;
+using SimpleShopD.Domain.Users;
+using SimpleShopD.Domain.Users.Exceptions;
+using SimpleShopD.Domain.Users.ValueObjects;
+using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
 {
-    public class SteNewPasswordTests
+    public class SetNewPasswordTests
     {
         private readonly ICommandHandler<SetNewPassword> _commandHandler;
         private readonly IUserRepository _userRepository;
         private readonly ITokenProvider _tokenProvider;
 
-        public SteNewPasswordTests()
+        public SetNewPasswordTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _commandHandler = new SetNewPasswordCommand(_userRepository);
@@ -33,7 +28,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             => await _commandHandler.HandleAsync(command);
 
         [Fact]
-        private async Task SetNewPassword_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
+        public async Task SetNewPassword_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
         {
             // Arrange
             Guid userId = Guid.NewGuid();
@@ -51,7 +46,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        private async Task SetNewPassword_ForNullResetPasswordToken_ShouldThrowSettingNewPasswordException()
+        public async Task SetNewPassword_ForNullResetPasswordToken_ShouldThrowSettingNewPasswordException()
         {
             // Arrange
             Guid userId = Guid.NewGuid();
@@ -71,7 +66,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        private async Task SetNewPassword_ForInvalidResetPasswordToken_ShouldThrowSettingNewPasswordException()
+        public async Task SetNewPassword_ForInvalidResetPasswordToken_ShouldThrowSettingNewPasswordException()
         {
             // Arrange
             Guid userId = Guid.NewGuid();
@@ -93,7 +88,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        private async Task SetNewPassword_ForInvalidPasswordPolicy_ShouldThrowPasswordPolicyException()
+        public async Task SetNewPassword_ForInvalidPasswordPolicy_ShouldThrowPasswordPolicyException()
         {
             // Arrange
             Guid userId = Guid.NewGuid();
@@ -115,7 +110,7 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        private async Task SetNewPassword_ForValidData_ShouldChangePassword()
+        public async Task SetNewPassword_ForValidData_ShouldChangePassword()
         {
             // Arrange
             Guid userId = Guid.NewGuid();

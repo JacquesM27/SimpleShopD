@@ -102,6 +102,12 @@ namespace SimpleShopD.Domain.Users
             return new AuthResponse(jwt, Fullname.ToString());
         }
 
+        public void LogOut(IContextAccessor cookieTokenAccessor)
+        {
+            RefreshToken = null;
+            cookieTokenAccessor.RemoveRefreshToken();
+        }
+
         public void ChangeRole(Role userRole)
         {
             if (UserRole != userRole)

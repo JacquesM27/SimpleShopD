@@ -27,5 +27,8 @@ namespace SimpleShopD.Infrastructure.Services
 
         public Guid GetUserId()
             => string.IsNullOrEmpty(_contextAccessor.HttpContext?.User?.Identity?.Name) ? Guid.Empty : Guid.Parse(_contextAccessor!.HttpContext!.User!.Identity!.Name!);
+
+        public void RemoveRefreshToken()
+            => _contextAccessor?.HttpContext?.Response?.Cookies.Delete("refreshToken");
     }
 }

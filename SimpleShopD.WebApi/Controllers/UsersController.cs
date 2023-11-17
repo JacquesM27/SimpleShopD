@@ -5,6 +5,7 @@ using SimpleShopD.Application.Commands.Users.AddressAdd;
 using SimpleShopD.Application.Commands.Users.AddressRemove;
 using SimpleShopD.Application.Commands.Users.ChangeUserPassword;
 using SimpleShopD.Application.Commands.Users.Login;
+using SimpleShopD.Application.Commands.Users.Logout;
 using SimpleShopD.Application.Commands.Users.NewPassword;
 using SimpleShopD.Application.Commands.Users.RefreshToken;
 using SimpleShopD.Application.Commands.Users.ResetPasswordToken;
@@ -101,6 +102,14 @@ namespace SimpleShopD.WebApi.Controllers
         {
             var result = await _commandTResultDispatcher.DispatchAsync(command);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> UserLogout()
+        {
+            await _commandDispatcher.DispatchAsync(new LogoutUser());
+            return Ok();
         }
     }
 }

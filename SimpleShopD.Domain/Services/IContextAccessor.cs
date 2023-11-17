@@ -6,6 +6,8 @@
 
         void AppendRefreshToken(string refreshToken, DateTime expires);
 
+        void RemoveRefreshToken();
+
         Guid GetUserId();
     }
 }
