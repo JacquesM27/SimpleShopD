@@ -1,0 +1,9 @@
+@apiUrl = https://localhost:7278/api
+
+POST {{apiUrl}}/Users/login
+Content-Type: application/json
+
+{
+  "email": "admin@simpleshop.com",
+  "password": "12345Abc!"
+}
