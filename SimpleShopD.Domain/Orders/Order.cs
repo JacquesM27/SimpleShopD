@@ -21,9 +21,10 @@ namespace SimpleShopD.Domain.Orders
 
         public Order(Guid id, Guid userId, Guid addressId, Fullname receiverFullname) : base(id)
         {
-            CreationDate = DateTime.UtcNow;
+            DateTime now = DateTimeOffset.UtcNow.UtcDateTime;
+            CreationDate = now;
             UserId = userId;
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = now;
             AddressId = addressId;
             ReceiverFullname = receiverFullname;
             Status = OrderStatus.NotPaid;
@@ -39,7 +40,7 @@ namespace SimpleShopD.Domain.Orders
             if (amount != TotalPrice)
                 throw new PayOrderException("Invalid amount.");
             Status = OrderStatus.Paid;
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = DateTimeOffset.UtcNow.UtcDateTime;
         }
 
         public void ChangeDeliveryAddress(Guid addressId)
@@ -64,7 +65,7 @@ namespace SimpleShopD.Domain.Orders
                 throw new ChangeStatusOfOrderException("Invalid order status.");
 
             Status = OrderStatus.Pending;
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = DateTimeOffset.UtcNow.UtcDateTime;
         }
 
         public void MoveToComplete()
@@ -73,7 +74,7 @@ namespace SimpleShopD.Domain.Orders
                 throw new ChangeStatusOfOrderException("Order is not pending.");
 
             Status = OrderStatus.Completed;
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = DateTimeOffset.UtcNow.UtcDateTime;
         }
 
         public void ReturnOrder()
@@ -82,7 +83,7 @@ namespace SimpleShopD.Domain.Orders
                 throw new ChangeStatusOfOrderException($"Cannot return order with status {Status.Value}.");
 
             Status = OrderStatus.Returned;
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = DateTimeOffset.UtcNow.UtcDateTime;
         }
 
         public void CancelOrder()
@@ -91,7 +92,7 @@ namespace SimpleShopD.Domain.Orders
                 throw new ChangeStatusOfOrderException($"Cannot cancel order with status {Status.Value}.");
 
             Status = OrderStatus.Cancelled;
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = DateTimeOffset.UtcNow.UtcDateTime;
         }
 
         public void AddOrderLine(Guid id, Guid productId, decimal quantity, decimal price)
@@ -109,7 +110,7 @@ namespace SimpleShopD.Domain.Orders
             else
                 OrderLines.Add(orderLine);
 
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = DateTimeOffset.UtcNow.UtcDateTime;
         }
 
         public void RemoveOrderLine(Guid id)
@@ -137,7 +138,7 @@ namespace SimpleShopD.Domain.Orders
             if (orderLineIndex != OrderLines.Count - 1)
                 UpdateLinesNos(orderLineIndex);
 
-            LastModifiedDate = DateTime.UtcNow;
+            LastModifiedDate = DateTimeOffset.UtcNow.UtcDateTime;
         }
 
         private void UpdateLinesNos(int startIndex)

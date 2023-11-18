@@ -62,13 +62,8 @@ namespace SimpleShopD.Domain.Users
                 throw new RefreshTokenOperationException("Account is not active");
             if (RefreshToken is null)
                 throw new RefreshTokenOperationException("Missing refresh");
-            if (RefreshToken.ExpirationDate < DateTime.UtcNow)
+            if (RefreshToken.IsExpired)
                 throw new RefreshTokenOperationException("Refresh is expired");
-
-            var refresh = contextAccessor.GetRefreshToken()
-                ?? throw new RefreshTokenOperationException("Missing refresh in request");
-            if(refresh != RefreshToken.Value)
-                throw new RefreshTokenOperationException("Invalid refresh");
 
             RefreshToken = new Token(TokenType.Refresh, tokenProvider.GenerateRandomToken());
             string jwt = tokenProvider.Provide(UserRole, Id, Email);

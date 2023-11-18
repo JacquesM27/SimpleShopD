@@ -39,6 +39,9 @@ namespace SimpleShopD.WebApi
                             .GetBytes(builder.Configuration.GetSection("jwt:SecretToken").Value)),
                         ValidateAudience = false,
                         //ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
+                        RequireExpirationTime = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
             return builder;

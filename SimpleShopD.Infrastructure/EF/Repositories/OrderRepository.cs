@@ -31,10 +31,6 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
 
         public async Task UpdateAsync(Order order, CancellationToken cancellationToken = default)
         {
-            var entry = _context.Entry(order);
-            if (entry.State is EntityState.Unchanged or EntityState.Detached)
-                return;
-
             _orders.Update(order);
             await _context.SaveChangesAsync(cancellationToken);
         }

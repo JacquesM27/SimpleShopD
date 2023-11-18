@@ -74,7 +74,8 @@ namespace SimpleShopD.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
+        //[AllowAnonymous]
         [HttpPost("token/refresh")]
         public async Task<IActionResult> RefreshToken()
         {

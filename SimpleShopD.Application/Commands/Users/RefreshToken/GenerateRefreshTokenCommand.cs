@@ -6,29 +6,23 @@ using SimpleShopD.Shared.Abstractions.Commands;
 
 namespace SimpleShopD.Application.Commands.Users.RefreshToken
 {
-    internal sealed class GenerateRefreshTokenCommand : ICommandTResultHandler<GenerateRefreshToken, AuthResponse>
+    internal sealed class GenerateRefreshTokenCommand(
+        IUserRepository userRepository, 
+        ITokenProvider tokenProvider,
+        IContextAccessor cookieTokenAccessor)
+            //cool feature as long as you don't change anything in the default constructor
+            : ICommandTResultHandler<GenerateRefreshToken, AuthResponse>
     {
-        private readonly IUserRepository _userRepository;
-        private readonly ITokenProvider _tokenProvider;
-        private readonly IContextAccessor _contextAccessor;
-
-        public GenerateRefreshTokenCommand(IUserRepository userRepository, ITokenProvider tokenProvider, IContextAccessor cookieTokenAccessor)
-        {
-            _userRepository = userRepository;
-            _tokenProvider = tokenProvider;
-            _contextAccessor = cookieTokenAccessor;
-        }
-
         public async Task<AuthResponse> HandleAsync(GenerateRefreshToken command)
         {
-            var userId = _contextAccessor.GetUserId();
-            if (userId == Guid.Empty)
-                throw new UserDoesNotExistException(userId.ToString());
-            var user = await _userRepository.GetAsync(userId)
-                ?? throw new UserDoesNotExistException(userId.ToString());
+            var userRefresh = cookieTokenAccessor.GetRefreshToken();
+            if (string.IsNullOrEmpty(userRefresh))
+                throw new MissingRefreshTokenException(string.Empty);
+            var user = await userRepository.GetByRefresh(userRefresh)
+                ?? throw new UserDoesNotExistException(userRefresh);
 
-            var token = user.GenerateRefreshToken(_tokenProvider, _contextAccessor);
-            await _userRepository.UpdateAsync(user);
+            var token = user.GenerateRefreshToken(tokenProvider, cookieTokenAccessor);
+            await userRepository.UpdateAsync(user);
             return token;
         }
     }

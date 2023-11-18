@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SimpleShopD.Application.Commands.Users.NewPassword;
 using System.Reflection;
+using SimpleShopD.Domain.Services.DTO;
 
 namespace SimpleShopD.Application.Tests.Commands.Users
 {
@@ -33,39 +34,38 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             _commandHandler = new GenerateRefreshTokenCommand(_userRepository, _tokenProvider, _contextAccessor);
         }
 
-        private async Task Act(GenerateRefreshToken command)
+        private async Task<AuthResponse> Act(GenerateRefreshToken command)
             => await _commandHandler.HandleAsync(command);
 
         [Fact]
-        public async Task GenerateRefreshToken_WithInvalidUserId_ShouldThrowUserDoesNotExistException()
+        public async Task GenerateRefreshToken_ForMissingRefreshToken_ShouldThrowUserDoesNotExistException()
         {
             // Arrange
             var command = new GenerateRefreshToken();
-            _contextAccessor.GetUserId().Returns(Guid.Empty);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
 
             // Assert
-            exception.Should().BeOfType<UserDoesNotExistException>();
-            exception.Message.Should().Be(Guid.Empty.ToString());
+            exception.Should().BeOfType<MissingRefreshTokenException>();
+            exception.Message.Should().Be(string.Empty);
             await _userRepository.Received(0).UpdateAsync(Arg.Any<User>());
         }
 
         [Fact]
-        public async Task GenerateRefreshToken_ForNotExistingUser_ShouldThrowUserDoesNotExistException()
+        public async Task GenerateRefreshToken_ForIncorrectRefresh_ShouldThrowUserDoesNotExistException()
         {
             // Arrange
-            var userId = Guid.NewGuid();
+            var refresh = TestUserExtension.GenerateRandomToken();
             var command = new GenerateRefreshToken();
-            _contextAccessor.GetUserId().Returns(userId);
+            _contextAccessor.GetRefreshToken().Returns(refresh);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
 
             // Assert
             exception.Should().BeOfType<UserDoesNotExistException>();
-            exception.Message.Should().Be(userId.ToString());
+            exception.Message.Should().Be(refresh);
             await _userRepository.Received(0).UpdateAsync(Arg.Any<User>());
         }
 
@@ -75,9 +75,10 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             var userId = Guid.NewGuid();
             var command = new GenerateRefreshToken();
-            _contextAccessor.GetUserId().Returns(userId);
+            var refresh = TestUserExtension.GenerateRandomToken();
+            _contextAccessor.GetRefreshToken().Returns(refresh);
             var user = TestUserExtension.CreateValidUser(Role.User);
-            _userRepository.GetAsync(userId).Returns(user);
+            _userRepository.GetByRefresh(refresh).Returns(user);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
@@ -94,10 +95,11 @@ namespace SimpleShopD.Application.Tests.Commands.Users
             // Arrange
             var userId = Guid.NewGuid();
             var command = new GenerateRefreshToken();
-            _contextAccessor.GetUserId().Returns(userId);
+            var refresh = TestUserExtension.GenerateRandomToken();
+            _contextAccessor.GetRefreshToken().Returns(refresh);
             var user = TestUserExtension.CreateValidUser(Role.User);
             user.Activate(user.ActivationToken!.Value);
-            _userRepository.GetAsync(userId).Returns(user);
+            _userRepository.GetByRefresh(refresh).Returns(user);
 
             // Act
             var exception = await Record.ExceptionAsync(() => Act(command));
@@ -109,30 +111,32 @@ namespace SimpleShopD.Application.Tests.Commands.Users
         }
 
         [Fact]
-        public async Task GenerateRefreshToken_ForRefreshExpired_ShouldThrowRefreshTokenOperationException()
+        public async Task GenerateRefreshToken_ForValidRefresh_ShouldReturnAuthResposeWithNewJwt()
         {
             // Arrange
             var userId = Guid.NewGuid();
             var command = new GenerateRefreshToken();
-            string refreshToken = TestUserExtension.GenerateRandomToken();
-            _tokenProvider.GenerateRandomToken().Returns(refreshToken);
-            _contextAccessor.GetUserId().Returns(userId);
-            _contextAccessor.GetRefreshToken().Returns(refreshToken);
+            var refresh = TestUserExtension.GenerateRandomToken();
+            _contextAccessor.GetRefreshToken().Returns(refresh);
             var user = TestUserExtension.CreateValidUser(Role.User);
             user.Activate(user.ActivationToken!.Value);
+            string newRefresh = TestUserExtension.GenerateRandomToken();
+            _tokenProvider.GenerateRandomToken().Returns(newRefresh);
+            _tokenProvider.Provide(user.UserRole, user.Id, user.Email).Returns("REAL JWT");
             user.Login("JohnDoe123!", _tokenProvider, _contextAccessor);
-            //user.RefreshToken!.IsExpired.Returns(true);
-
+            _userRepository.GetByRefresh(refresh).Returns(user);
             _userRepository.GetAsync(userId).Returns(user);
-
+            
             // Act
-            var exception = await Record.ExceptionAsync(() => Act(command));
+            var result = await Act(command);
 
             // Assert
-            exception.Should().BeOfType<RefreshTokenOperationException>();
-            exception.Message.Should().Be("Refresh is expired");
-            await _userRepository.Received(0).UpdateAsync(Arg.Any<User>());
+            result.Should().BeOfType<AuthResponse>();
+            result.Should().NotBeNull();
+            result.Jwt.Should().NotBeNullOrEmpty();
+            result.Fullname.Should().NotBeNullOrEmpty();
+            _contextAccessor.Received(1).AppendRefreshToken(user.RefreshToken!.Value, user.RefreshToken!.ExpirationDate);
+            await _userRepository.Received(1).UpdateAsync(Arg.Any<User>());
         }
-
     }
 }

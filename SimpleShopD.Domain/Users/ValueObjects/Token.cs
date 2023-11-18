@@ -7,7 +7,7 @@ namespace SimpleShopD.Domain.Users.ValueObjects
     {
         public string Value { get; }
         public DateTime ExpirationDate { get; }
-        public bool IsExpired => DateTime.UtcNow > ExpirationDate;
+        public bool IsExpired => DateTimeOffset.UtcNow.UtcDateTime > ExpirationDate;
 
         public Token(TokenType tokenType, string value)
         {
@@ -17,9 +17,9 @@ namespace SimpleShopD.Domain.Users.ValueObjects
             Value = value;
             ExpirationDate = tokenType switch
             {
-                TokenType.Activation => DateTime.UtcNow.AddDays(1),
-                TokenType.ResetPassword => DateTime.UtcNow.AddMinutes(30),
-                TokenType.Refresh => DateTime.UtcNow.AddMinutes(30),
+                TokenType.Activation => DateTimeOffset.UtcNow.UtcDateTime.AddDays(1),
+                TokenType.ResetPassword => DateTimeOffset.UtcNow.UtcDateTime.AddMinutes(30),
+                TokenType.Refresh => DateTimeOffset.UtcNow.UtcDateTime.AddMinutes(30),
                 _ => throw new ArgumentException("Value not implemented."),
             };
         }

@@ -45,10 +45,6 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
 
         public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
         {
-            var entry = _context.Entry(user);
-            if (entry.State is EntityState.Unchanged or EntityState.Detached)
-                return;
-            
             _users.Update(user);
             await _context.SaveChangesAsync(cancellationToken);
         }
@@ -58,6 +54,11 @@ namespace SimpleShopD.Infrastructure.EF.Repositories
                 .Where(x => x.Id == userId)
                 .SelectMany(c => c.Addresses)
                 .Where(x => x.Id == addressId)
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+        public async Task<User?> GetByRefresh(string refreshToken, CancellationToken cancellationToken = default) 
+            => await _users
+                .Where(x => x.RefreshToken!.Value == refreshToken)
                 .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 }

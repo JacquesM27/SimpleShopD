@@ -13,5 +13,6 @@ namespace SimpleShopD.Domain.Repositories
         Task<bool> IsAdminAsync(Guid id, CancellationToken cancellationToken = default);
         Task<bool> DoesExistAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Address?> GetAddressAsync(Guid userId, Guid addressId, CancellationToken cancellationToken = default);
+        Task<User?> GetByRefresh(string refreshToken, CancellationToken cancellationToken = default);
     }
 }

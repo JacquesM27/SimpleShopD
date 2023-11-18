@@ -17,14 +17,16 @@ namespace SimpleShopD.Infrastructure.Services
 
         public string Provide(Role role, Guid userId, string email)
         {
-            DateTime expirationDate = DateTime.UtcNow.AddMinutes(5);
-            List<Claim> claims = new()
-            {
+            DateTimeOffset expirationDateTimeOffset = DateTimeOffset.UtcNow.AddMinutes(5);
+            var expirationDate = expirationDateTimeOffset.UtcDateTime;
+
+            List<Claim> claims =
+            [
                 new(ClaimTypes.NameIdentifier, userId.ToString()),
                 new(ClaimTypes.Name, userId.ToString()),
                 new(ClaimTypes.Role, role),
                 new(ClaimTypes.Email, email)
-            };
+            ];
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes
                 (_configuration.GetSection("jwt:SecretToken").Value!));
